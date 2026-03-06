@@ -1,7 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+function getClient() {
+  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+}
 const FREE_LIMIT = 3;
 const COOKIE_KEY = "shukatsu_use_count";
 
@@ -63,7 +65,7 @@ export async function POST(req: NextRequest) {
 温かく、前向きな言葉で伝えてください。`;
 
   try {
-    const message = await client.messages.create({
+    const message = await getClient().messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 1024,
       messages: [{ role: "user", content: prompt }],

@@ -113,8 +113,30 @@ export default function ShukatsuTool() {
               <div className="flex items-center justify-center h-full text-gray-400"><p className="text-sm text-center">情報を入力して<br />「アドバイスをもらう」を押してください</p></div>
             )}
           </div>
+          {result && (
+            <div className="mt-3 flex gap-2">
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AI終活サポートでアドバイスをもらいました！🌸 #終活 #AI終活サポート https://shukatsu-ai.vercel.app")}`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-4 py-2 bg-black text-white text-sm font-bold rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                𝕏 でシェア
+              </a>
+              <a
+                href={`https://line.me/R/msg/text/?${encodeURIComponent("AI終活サポートでアドバイスをもらいました！🌸 #終活 https://shukatsu-ai.vercel.app")}`}
+                target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-4 py-2 bg-[#06C755] text-white text-sm font-bold rounded-lg hover:bg-[#05b04c] transition-colors"
+              >
+                LINE でシェア
+              </a>
+            </div>
+          )}
         </div>
       </div>
+      <footer className="text-center py-6 text-xs text-gray-400 border-t mt-4 space-x-4">
+        <a href="/legal" className="hover:text-gray-600">特定商取引法に基づく表記</a>
+        <a href="/privacy" className="hover:text-gray-600">プライバシーポリシー</a>
+      </footer>
     </main>
   );
 }
