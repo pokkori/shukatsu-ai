@@ -46,8 +46,8 @@ export default function ShukatsuLP() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
               { name: "お試し", price: "無料", limit: "3回まで", url: "/tool", highlight: false },
-              { name: "スタンダード", price: "¥980/月", limit: "月30回", url: "https://gumroad.com/l/REPLACE", highlight: true },
-              { name: "ビジネス", price: "¥2,980/月", limit: "無制限＋書類テンプレ", url: "https://gumroad.com/l/REPLACE", highlight: false },
+              { name: "スタンダード", price: "¥980/月", limit: "月30回", url: "/api/stripe/checkout?plan=standard", highlight: true },
+              { name: "ビジネス", price: "¥2,980/月", limit: "無制限＋書類テンプレ", url: "/api/stripe/checkout?plan=business", highlight: false },
             ].map(plan => (
               <div key={plan.name} className={`rounded-2xl border p-6 relative ${plan.highlight ? "border-green-500 shadow-lg" : "border-gray-200"}`}>
                 {plan.highlight && <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-green-600 text-white px-3 py-0.5 rounded-full">人気</div>}
