@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
 
   const { age, family, concern, assets } = body as Record<string, string>;
   if (!concern) return NextResponse.json({ error: "相談内容は必須です" }, { status: 400 });
+  if (concern.length > 1000) return NextResponse.json({ error: "相談内容は1000文字以内で入力してください" }, { status: 400 });
 
   const prompt = `あなたは終活の専門アドバイザーです。以下の情報をもとに、具体的で温かみのある終活アドバイスを提供してください。
 
@@ -69,7 +70,7 @@ export async function POST(req: NextRequest) {
     const text = message.content[0].type === "text" ? message.content[0].text : "";
     const newCount = cookieCount + 1;
     const res = NextResponse.json({ result: text, count: newCount });
-    res.cookies.set(COOKIE_KEY, String(newCount), { maxAge: 60 * 60 * 24 * 30, sameSite: "lax" });
+    res.cookies.set(COOKIE_KEY, String(newCount), { maxAge: 60 * 60 * 24 * 30, sameSite: "lax", httpOnly: true, secure: true });
     return res;
   } catch (err) {
     console.error(err);
