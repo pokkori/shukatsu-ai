@@ -68,7 +68,10 @@ export default function ShukatsuLP() {
         <Link href="/tool" className="inline-block bg-white text-green-600 font-bold px-8 py-4 rounded-xl hover:bg-green-50">無料で相談する →</Link>
       </section>
 
-      <footer className="border-t py-6 text-center text-xs text-gray-400">AI終活サポート © 2026 ※本サービスは情報提供を目的としており、法律・税務・医療の専門的アドバイスではありません。</footer>
+      <footer className="border-t py-6 text-center text-xs text-gray-400 space-y-2">
+        <p>AI終活サポート © 2026 ※本サービスは情報提供を目的としており、法律・税務・医療の専門的アドバイスではありません。</p>
+        <p><Link href="/privacy" className="underline hover:text-gray-600">プライバシーポリシー</Link></p>
+      </footer>
     </main>
   );
 }
