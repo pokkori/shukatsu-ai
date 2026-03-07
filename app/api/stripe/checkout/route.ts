@@ -7,17 +7,19 @@ function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!);
 }
 
-const PRICES: Record<string, string> = {
-  standard: process.env.STRIPE_PRICE_STD!,
-  business: process.env.STRIPE_PRICE_BIZ!,
+// one_time: 1回限り支払い（¥1,980） standard/business: 月額サブスク
+const PRICES: Record<string, { id: string; mode: "payment" | "subscription" }> = {
+  one_time: { id: process.env.STRIPE_PRICE_ONCE!, mode: "payment" },
+  standard: { id: process.env.STRIPE_PRICE_STD!, mode: "subscription" },
+  business: { id: process.env.STRIPE_PRICE_BIZ!, mode: "subscription" },
 };
 
 async function createSession(plan: string, origin: string) {
-  const priceId = PRICES[plan];
-  if (!priceId) return null;
+  const config = PRICES[plan];
+  if (!config || !config.id) return null;
   return getStripe().checkout.sessions.create({
-    mode: "subscription",
-    line_items: [{ price: priceId, quantity: 1 }],
+    mode: config.mode,
+    line_items: [{ price: config.id, quantity: 1 }],
     success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/#pricing`,
     locale: "ja",

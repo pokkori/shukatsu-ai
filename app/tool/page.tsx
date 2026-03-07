@@ -46,16 +46,22 @@ function Paywall({ onClose }: { onClose: () => void }) {
       <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
         <div className="text-3xl mb-3">🌸</div>
         <h2 className="text-lg font-bold mb-2">無料相談回数を使い切りました</h2>
-        <p className="text-sm text-gray-500 mb-1">終活・相続・エンディングのアドバイスを継続して受けられます</p>
+        <p className="text-sm text-gray-500 mb-1">詳細な終活アドバイスを受け取る</p>
         <ul className="text-xs text-gray-400 text-left mb-5 space-y-1 mt-3">
           <li>✓ 相続・財産対策の詳細アドバイス</li>
           <li>✓ 医療・介護の事前準備ガイド</li>
-          <li>✓ 専門家費用の相場情報</li>
+          <li>✓ 専門家費用の相場情報（一覧表付き）</li>
           <li>✓ 印刷してご家族と共有</li>
         </ul>
         <div className="space-y-3 mb-4">
-          <button onClick={() => startCheckout("standard")} className="block w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700">スタンダード ¥980/月</button>
-          <button onClick={() => startCheckout("business")} className="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl text-sm hover:bg-gray-200">プレミアム ¥2,980/月</button>
+          <button onClick={() => startCheckout("one_time")}
+            className="block w-full bg-green-600 text-white font-bold py-3 rounded-xl hover:bg-green-700">
+            <span className="text-base">¥1,980</span>
+            <span className="text-sm font-normal ml-1">で詳細レポートを受け取る（1回限り）</span>
+          </button>
+          <button onClick={() => startCheckout("standard")} className="block w-full bg-gray-100 text-gray-700 py-2.5 rounded-xl text-sm hover:bg-gray-200">
+            月額プラン ¥980/月（何度でも相談）
+          </button>
         </div>
         <button onClick={onClose} className="text-xs text-gray-400">閉じる</button>
       </div>
