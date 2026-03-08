@@ -193,6 +193,10 @@ export default function ShukatsuTool() {
             <p className="text-xs text-gray-400 mt-1">詳しく書くほど的確なアドバイスが得られます（{concern.length}/1000文字）</p>
           </div>
 
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs text-blue-800">
+            ⚠️ <strong>重要</strong>：このアドバイスはAIによる参考情報です。<strong>相続・遺言・税務は弁護士・司法書士・税理士に、医療・介護の判断は医師・ケアマネージャーに</strong>ご相談ください。本サービスは専門家の代替ではありません。
+          </div>
+
           <button type="submit" disabled={loading}
             className={`w-full font-medium py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-green-600 hover:bg-green-700 disabled:bg-green-300"}`}>
             {loading ? "アドバイスを作成中..." : isLimit ? "有料プランに申し込む" : "終活アドバイスをもらう（無料）"}
@@ -234,6 +238,7 @@ export default function ShukatsuTool() {
       <footer className="text-center py-6 text-xs text-gray-400 border-t mt-4 space-x-4">
         <a href="/legal" className="hover:text-gray-600">特定商取引法に基づく表記</a>
         <a href="/privacy" className="hover:text-gray-600">プライバシーポリシー</a>
+        <p className="mt-2 text-gray-300">本サービスはAI生成情報を提供します。法律・医療・税務判断は必ず専門家にご相談ください。</p>
       </footer>
     </main>
   );
