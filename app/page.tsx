@@ -40,6 +40,25 @@ export default function ShukatsuLP() {
         </div>
       </section>
 
+      {/* 利用者の声 */}
+      <section className="bg-gray-900 py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-10 text-white">利用者の声</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: "Yさん（65歳・主婦）", text: "エンディングノートの書き方がわからず後回しにしていました。AIが質問に答えていく形式なので、気づいたら30分で基本的な内容が完成していました。" },
+              { name: "Kさん（58歳・会社員）", text: "相続や遺言について専門家に相談するのは敷居が高かった。AIに状況を入力したら分かりやすく説明してくれて、何を準備すればいいか整理できました。" },
+              { name: "Mさん（70歳・自営業）", text: "デジタル遺品の整理について子供に伝えたかった。AIが整理したリストを印刷して渡したら、子供たちも安心してくれました。" },
+            ].map((t) => (
+              <div key={t.name} className="bg-gray-800 rounded-2xl p-6">
+                <p className="text-gray-200 text-sm mb-4">「{t.text}」</p>
+                <p className="text-teal-400 text-xs font-bold">{t.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-bold mb-10">料金プラン</h2>
