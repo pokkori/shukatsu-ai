@@ -40,6 +40,27 @@ export default function ShukatsuLP() {
         </div>
       </section>
 
+      {/* 感情フック */}
+      <section className="py-12 px-6 max-w-3xl mx-auto">
+        <h2 className="text-xl font-bold text-center text-gray-800 mb-6">こんな経験ありませんか？</h2>
+        <div className="space-y-4">
+          {[
+            { icon: "😓", text: "終活を始めなきゃと思いつつ、何から手をつければいいかわからず後回しにしてしまう..." },
+            { icon: "😰", text: "家族への負担を少なくしたいのに、相続や遺言の手続きが複雑すぎて一人では無理..." },
+            { icon: "💭", text: "専門家に相談するほどでもないかな...と気軽に相談できる場所がない..." },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-4 bg-green-50 border border-green-200 rounded-xl p-4">
+              <span className="text-2xl">{item.icon}</span>
+              <p className="text-gray-700 text-sm font-medium">{item.text}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6 bg-green-600 text-white rounded-2xl p-5 text-center">
+          <p className="font-bold text-base mb-1">AI終活サポートがその悩みを解決します</p>
+          <p className="text-green-100 text-sm">気軽に・無料で・24時間。AIがあなたのペースで丁寧にサポートします。</p>
+        </div>
+      </section>
+
       {/* 利用者の声 */}
       <section className="bg-gray-900 py-16 px-4">
         <div className="max-w-4xl mx-auto">
@@ -65,8 +86,8 @@ export default function ShukatsuLP() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
               { name: "お試し", price: "無料", limit: "3回まで", url: "/tool", highlight: false },
-              { name: "スタンダード", price: "¥980/月", limit: "月30回", url: "/api/stripe/checkout?plan=standard", highlight: true },
-              { name: "ビジネス", price: "¥2,980/月", limit: "無制限＋書類テンプレ", url: "/api/stripe/checkout?plan=business", highlight: false },
+              { name: "スタンダード", price: "¥980/月", limit: "月30回", url: "/tool", highlight: true },
+              { name: "ビジネス", price: "¥2,980/月", limit: "無制限＋書類テンプレ", url: "/tool", highlight: false },
             ].map(plan => (
               <div key={plan.name} className={`rounded-2xl border p-6 relative ${plan.highlight ? "border-green-500 shadow-lg" : "border-gray-200"}`}>
                 {plan.highlight && <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-green-600 text-white px-3 py-0.5 rounded-full">人気</div>}
@@ -85,6 +106,21 @@ export default function ShukatsuLP() {
       <section className="bg-green-600 py-16 text-center">
         <h2 className="text-2xl font-bold text-white mb-4">一人で悩まず、AIに相談してみてください</h2>
         <Link href="/tool" className="inline-block bg-white text-green-600 font-bold px-8 py-4 rounded-xl hover:bg-green-50">無料で相談する →</Link>
+      </section>
+
+      {/* X Share */}
+      <section className="py-8 px-4 text-center bg-gray-50">
+        <a
+          href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("AI終活サポートで終活の悩みを相談してみた🌸 エンディングノート・相続・デジタル遺品まで丁寧にアドバイスしてくれる → https://shukatsu-ai.vercel.app #終活 #AI終活")}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
+        >
+          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          Xでシェアする
+        </a>
       </section>
 
       <footer className="border-t py-6 text-center text-xs text-gray-400 space-y-2">
