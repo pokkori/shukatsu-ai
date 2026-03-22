@@ -54,7 +54,7 @@ function Paywall({ onClose }: { onClose: () => void }) {
           <KomojuButton planId="standard" planLabel="月額プラン ¥980/月（何度でも相談）"
             className="block w-full bg-gray-100 text-gray-700 py-2.5 rounded-xl text-sm hover:bg-gray-200" />
         </div>
-        <button onClick={onClose} className="text-xs text-gray-400">閉じる</button>
+        <button onClick={onClose} aria-label="プレミアムプランのモーダルを閉じる" className="text-xs text-gray-400">閉じる</button>
       </div>
     </div>
   );
@@ -63,7 +63,9 @@ function Paywall({ onClose }: { onClose: () => void }) {
 function CopyButton({ text, label = "コピー" }: { text: string; label?: string }) {
   const [copied, setCopied] = useState(false);
   return (
-    <button onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+    <button
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+      aria-label={copied ? "コピーしました" : `${label}をクリップボードにコピーする`}
       className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition-colors">
       {copied ? "コピー済み ✓" : label}
     </button>
@@ -87,8 +89,10 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
       <div className="flex gap-1 flex-wrap">
         {parsed.sections.map((s, i) => (
           <button key={i} onClick={() => setActiveTab(i)}
+            aria-label={`「${s.title}」セクションを表示する`}
+            aria-pressed={activeTab === i}
             className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeTab === i ? "bg-green-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
-            <span>{s.icon}</span><span className="hidden sm:inline">{s.title}</span>
+            <span aria-hidden="true">{s.icon}</span><span className="hidden sm:inline">{s.title}</span>
           </button>
         ))}
       </div>
@@ -101,7 +105,7 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
       </div>
       <div className="flex gap-2 justify-end">
         <CopyButton text={parsed.raw} label="全文コピー" />
-        <button onClick={handlePrint} className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium">
+        <button onClick={handlePrint} aria-label="アドバイス内容を印刷してご家族と共有する" className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium">
           印刷してご家族と共有
         </button>
       </div>
@@ -181,27 +185,32 @@ export default function ShukatsuTool() {
           <p className="text-sm text-gray-500">入力情報はAIアドバイス生成にのみ使用し、保存・第三者提供は一切行いません。</p>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">年齢</label>
-            <input type="number" value={age} onChange={e => setAge(e.target.value)} placeholder="例: 65"
+            <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">年齢</label>
+            <input id="age" type="number" value={age} onChange={e => setAge(e.target.value)} placeholder="例: 65"
+              aria-label="年齢を入力してください"
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">家族構成</label>
-            <input type="text" value={family} onChange={e => setFamily(e.target.value)} placeholder="例: 配偶者・子供2人・孫1人"
+            <label htmlFor="family" className="block text-sm font-medium text-gray-700 mb-1">家族構成</label>
+            <input id="family" type="text" value={family} onChange={e => setFamily(e.target.value)} placeholder="例: 配偶者・子供2人・孫1人"
+              aria-label="家族構成を入力してください"
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">資産状況（任意）</label>
-            <input type="text" value={assets} onChange={e => setAssets(e.target.value)} placeholder="例: 自宅・預貯金2000万・株式など"
+            <label htmlFor="assets" className="block text-sm font-medium text-gray-700 mb-1">資産状況（任意）</label>
+            <input id="assets" type="text" value={assets} onChange={e => setAssets(e.target.value)} placeholder="例: 自宅・預貯金2000万・株式など"
+              aria-label="資産状況（任意）"
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">相談内容・不安なこと <span className="text-red-500">*</span></label>
-            <textarea value={concern} onChange={e => setConcern(e.target.value)} rows={5} required
+            <label htmlFor="concern" className="block text-sm font-medium text-gray-700 mb-1">相談内容・不安なこと <span className="text-red-500">*</span></label>
+            <textarea id="concern" value={concern} onChange={e => setConcern(e.target.value)} rows={5} required
               placeholder="例: 遺言書を書きたいが何から始めればいいかわからない。相続で子供たちが揉めないようにしたい。認知症になった時の財産管理も心配。"
+              aria-label="相談内容・不安なこと（必須）"
+              aria-required="true"
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none" />
             <p className="text-xs text-gray-400 mt-1">詳しく書くほど的確なアドバイスが得られます（{concern.length}/1000文字）</p>
           </div>
@@ -211,6 +220,8 @@ export default function ShukatsuTool() {
           </div>
 
           <button type="submit" disabled={loading}
+            aria-label={loading ? "アドバイスを作成中です" : isLimit ? "有料プランに申し込む" : "終活アドバイスをもらう（無料）"}
+            aria-busy={loading}
             className={`w-full font-medium py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-green-600 hover:bg-green-700 disabled:bg-green-300"}`}>
             {loading ? "アドバイスを作成中..." : isLimit ? "有料プランに申し込む" : "終活アドバイスをもらう（無料）"}
           </button>
