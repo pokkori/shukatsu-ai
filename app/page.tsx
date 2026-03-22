@@ -11,7 +11,10 @@ export default function ShukatsuLP() {
     <main className="min-h-screen bg-white">
       <nav className="border-b border-gray-100 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-bold text-gray-900">🌸 AI終活サポート</span>
+          <span className="font-bold text-gray-900 flex items-center gap-2">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-green-600" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            AI終活サポート
+          </span>
           <Link href="/tool" className="bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-700">無料で相談する</Link>
         </div>
       </nav>
@@ -32,7 +35,7 @@ export default function ShukatsuLP() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
             {["何から始めればいいかわからない", "家族に話すタイミングがわからない", "遺産・相続のことが不安", "デジタルデータをどう整理するか"].map(p => (
               <div key={p} className="flex gap-3 bg-white rounded-xl p-4 border border-gray-200">
-                <span>🌿</span>
+                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-green-500 flex-shrink-0 mt-0.5" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                 <p className="text-sm text-gray-700">{p}</p>
               </div>
             ))}
@@ -45,12 +48,12 @@ export default function ShukatsuLP() {
         <h2 className="text-xl font-bold text-center text-gray-800 mb-6">こんな経験ありませんか？</h2>
         <div className="space-y-4">
           {[
-            { icon: "😓", text: "終活を始めなきゃと思いつつ、何から手をつければいいかわからず後回しにしてしまう..." },
-            { icon: "😰", text: "家族への負担を少なくしたいのに、相続や遺言の手続きが複雑すぎて一人では無理..." },
-            { icon: "💭", text: "専門家に相談するほどでもないかな...と気軽に相談できる場所がない..." },
+            { icon: "1", text: "終活を始めなきゃと思いつつ、何から手をつければいいかわからず後回しにしてしまう..." },
+            { icon: "2", text: "家族への負担を少なくしたいのに、相続や遺言の手続きが複雑すぎて一人では無理..." },
+            { icon: "3", text: "専門家に相談するほどでもないかな...と気軽に相談できる場所がない..." },
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-4 bg-green-50 border border-green-200 rounded-xl p-4">
-              <span className="text-2xl">{item.icon}</span>
+              <span className="w-8 h-8 rounded-full bg-green-600 text-white text-sm font-bold flex items-center justify-center flex-shrink-0">{item.icon}</span>
               <p className="text-gray-700 text-sm font-medium">{item.text}</p>
             </div>
           ))}

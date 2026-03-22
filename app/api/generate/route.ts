@@ -46,7 +46,22 @@ export async function POST(req: NextRequest) {
   const ageNum = parseInt(age) || 65;
   const inheritanceCaution = ageNum >= 60 ? `相続税の基礎控除（3,000万円＋法定相続人×600万円）を念頭に置いた具体的な節税アドバイスを含めること。` : "";
 
-  const prompt = `あなたは終活・相続・エンディングの専門アドバイザーです。ファイナンシャルプランナーと行政書士の資格を持ち、3,000件以上の終活相談を担当してきた経験から、以下の方への具体的で実践的なアドバイスを提供してください。
+  const SYSTEM_PROMPT = `あなたは終活・相続・エンディング分野の最上位専門アドバイザーです。ファイナンシャルプランナー（CFP）・行政書士・終活カウンセラーの3資格を保有し、3,000件以上の終活相談を担当してきた実績を持ちます。
+
+【専門性の根拠】
+- 相続税申告：基礎控除（3,000万円＋法定相続人×600万円）の計算から節税対策まで精通
+- 遺言書：自筆証書遺言・公正証書遺言それぞれの費用・手続き・注意点を熟知
+- 任意後見制度・成年後見制度の実務経験多数
+- デジタル遺品（SNS・電子マネー・仮想通貨）の整理実務対応
+- ACP（アドバンス・ケア・プランニング）・尊厳死宣言書の解説実績
+
+【アドバイスの姿勢】
+- 相談者の年齢・家族構成・資産状況に完全に即した個別アドバイスを提供する
+- 法律・税務の一般的な情報を分かりやすく伝えるが、個別判断は専門家へ誘導する
+- 温かみのある言葉で、不安を安心に変えるコミュニケーションをとる
+- 具体的な行動手順・費用相場・タイムラインを必ず含める`;
+
+  const prompt = `以下の相談者への終活アドバイスを生成してください。
 
 【相談者プロフィール】
 年齢: ${age || "65"}歳
@@ -58,46 +73,46 @@ ${inheritanceCaution}
 以下の構成で出力してください。各セクションの区切りは必ず「---」（ハイフン3つのみの行）を使ってください：
 
 ---
-## 🚨 今すぐ着手すべきこと
+## 今すぐ着手すべきこと
 
-（相談内容を踏まえた具体的なアクション3つ。「〇〇する」と断言形式で。それぞれ「なぜ今やる必要があるか」の理由も添えて。）
+（相談内容を踏まえた具体的なアクション3つ。「〇〇する」と断言形式で。それぞれ「なぜ今やる必要があるか」の理由・期限の目安も添えて。）
 
 ---
-## 📝 エンディングノート記載必須項目
+## エンディングノート記載必須項目
 
-**① 自分のこと（医療・介護の意思）**
+**[1] 自分のこと（医療・介護の意思）**
 - 延命治療についての意思（尊厳死宣言書・ACP）
 - （その他この方の状況で重要な項目）
 
-**② 財産・資産（${assets ? "資産状況を踏まえて" : "一般的な項目"}）**
+**[2] 財産・資産（${assets ? "資産状況を踏まえて" : "一般的な項目"}）**
 - （具体的な記載すべき項目を3〜5点）
 
-**③ デジタル遺品の整理**
+**[3] デジタル遺品の整理**
 - SNS・ネット銀行・スマートフォン・写真データの具体的な整理手順
 
-**④ 葬儀・お墓の希望**
+**[4] 葬儀・お墓の希望**
 - （記載しておくべき具体的な項目）
 
 ---
-## 💰 相続・財産対策
+## 相続・財産対策
 
-（家族構成「${family || "家族"}」の場合の法定相続分、相続税の概算、遺言書作成の必要性、具体的な節税・対策を説明。専門家への相談が必要な場合はその旨も。）
+（家族構成「${family || "家族"}」の場合の法定相続分、相続税の概算、遺言書作成の必要性、具体的な節税・対策を説明。費用相場も含める。専門家への相談が必要な場合はその旨も。）
 
 ---
-## 🏥 医療・介護の事前準備
+## 医療・介護の事前準備
 
 **今から決めておくこと:**
 - 延命治療についての意思（尊厳死宣言書 or ACP）
-- 認知症になった場合の財産管理（任意後見制度の活用）
+- 認知症になった場合の財産管理（任意後見制度の活用・費用目安）
 - 介護が必要になった際の希望（在宅 or 施設）
 
 **${family ? family + "との" : "家族との"}話し合いの進め方:**
-（具体的な話の切り出し方、場の設定方法）
+（具体的な話の切り出し方、場の設定方法、話し合いで決めておくべき事項リスト）
 
 ---
-## 📋 専門家に相談すべきケース
+## 専門家に相談すべきケース
 
-| 専門家 | 相談すべき内容 | 相場費用 |
+| 専門家 | 相談すべき内容 | 費用相場 |
 |--------|--------------|--------|
 | 行政書士 | | |
 | 司法書士 | | |
@@ -105,7 +120,7 @@ ${inheritanceCaution}
 | ファイナンシャルプランナー | | |
 
 ---
-## 💌 あなたへのメッセージ
+## あなたへのメッセージ
 
 （相談内容に寄り添った、温かく前向きな言葉。100文字程度。「終活は人生の締めくくりではなく、今をより豊かに生きるための準備です」という観点で。）
 
@@ -113,16 +128,35 @@ ${inheritanceCaution}
 ※ このアドバイスは一般的な情報提供を目的としており、個別の法的・税務アドバイスではありません。重要な決定は専門家にご相談ください。`;
 
   try {
-    const message = await getClient().messages.create({
+    const newCount = cookieCount + 1;
+    const encoder = new TextEncoder();
+    const stream = getClient().messages.stream({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 3000,
+      system: SYSTEM_PROMPT,
       messages: [{ role: "user", content: prompt }],
     });
-    const text = message.content[0].type === "text" ? message.content[0].text : "";
-    const newCount = cookieCount + 1;
-    const res = NextResponse.json({ result: text, count: newCount });
-    res.cookies.set(COOKIE_KEY, String(newCount), { maxAge: 60 * 60 * 24 * 30, sameSite: "lax", httpOnly: true, secure: true });
-    return res;
+
+    const readable = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of stream) {
+            if (chunk.type === "content_block_delta" && chunk.delta.type === "text_delta") {
+              controller.enqueue(encoder.encode(chunk.delta.text));
+            }
+          }
+          controller.enqueue(encoder.encode(`\nDONE:${JSON.stringify({ count: newCount })}`));
+          controller.close();
+        } catch (err) { console.error(err); controller.error(err); }
+      },
+    });
+
+    const headers: Record<string, string> = {
+      "Content-Type": "text/event-stream; charset=utf-8",
+      "Cache-Control": "no-cache",
+      "Set-Cookie": `${COOKIE_KEY}=${newCount}; Max-Age=${60 * 60 * 24 * 30}; SameSite=Lax; HttpOnly; Secure; Path=/`,
+    };
+    return new Response(readable, { headers });
   } catch (err) {
     console.error(err);
     return NextResponse.json({ error: "AI生成中にエラーが発生しました。しばらく待ってから再試行してください。" }, { status: 500 });

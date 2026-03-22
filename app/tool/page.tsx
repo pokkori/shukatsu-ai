@@ -130,13 +130,30 @@ export default function ShukatsuTool() {
     try {
       const res = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ age, family, concern, assets }) });
       if (res.status === 429) { setShowPaywall(true); setLoading(false); return; }
-      const data = await res.json();
-      if (!res.ok) { setError(data.error || "エラーが発生しました"); setLoading(false); return; }
-      const newCount = data.count ?? count + 1;
-      localStorage.setItem(KEY, String(newCount));
-      setCount(newCount);
-      setParsed(parseResult(data.result || ""));
-      if (newCount >= FREE_LIMIT) setTimeout(() => setShowPaywall(true), 1500);
+      if (!res.ok) { const data = await res.json(); setError(data.error || "エラーが発生しました"); setLoading(false); return; }
+      if (!res.body) throw new Error("No response body");
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const doneIdx = buffer.lastIndexOf("\nDONE:");
+        if (doneIdx !== -1) {
+          const fullText = buffer.slice(0, doneIdx);
+          const jsonStr = buffer.slice(doneIdx + 6);
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const newCount = parsed.count ?? count + 1;
+            localStorage.setItem(KEY, String(newCount));
+            setCount(newCount);
+            if (newCount >= FREE_LIMIT) setTimeout(() => setShowPaywall(true), 1500);
+          } catch { /* ignore parse error */ }
+          setParsed(parseResult(fullText));
+          break;
+        }
+      }
     } catch { setError("通信エラーが発生しました。インターネット接続を確認してください。"); }
     finally { setLoading(false); }
   };
@@ -146,7 +163,12 @@ export default function ShukatsuTool() {
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}}
       <nav className="bg-white border-b px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/" className="font-bold text-gray-900">🌸 AI終活サポート</Link>
+          <Link href="/" className="font-bold text-gray-900 flex items-center gap-2">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-green-600" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+            </svg>
+            AI終活サポート
+          </Link>
           <span className={`text-xs px-3 py-1 rounded-full ${isLimit ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}>
             {isLimit ? "無料枠終了" : `無料あと${FREE_LIMIT - count}回`}
           </span>
