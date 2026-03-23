@@ -40,25 +40,25 @@ function DiagnosisHistoryPanel() {
   }, []);
   if (history.length === 0) return null;
   return (
-    <div className="border border-green-200 rounded-xl mb-4 overflow-hidden bg-white">
+    <div className="border border-white/10 rounded-xl mb-4 overflow-hidden backdrop-blur-sm bg-white/5">
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
         aria-expanded={open}
         aria-label="過去の診断履歴を表示"
-        className="w-full flex items-center justify-between px-4 py-3 hover:bg-green-50 transition-colors text-left"
+        className="w-full flex items-center justify-between px-4 py-3 hover:bg-white/10 transition-colors text-left"
       >
-        <span className="text-sm font-bold text-green-800">過去の診断履歴（直近{history.length}件）</span>
+        <span className="text-sm font-bold text-green-300">過去の診断履歴（直近{history.length}件）</span>
         <span className="text-gray-400 text-xs">{open ? "▲" : "▼"}</span>
       </button>
       {open && (
-        <ul className="border-t border-green-100 divide-y divide-green-50">
+        <ul className="border-t border-white/10 divide-y divide-white/5">
           {history.map(h => (
             <li key={h.id} className="px-4 py-2">
               <div className="flex items-center justify-between mb-0.5">
-                <span className="text-xs text-gray-500">{h.date}</span>
+                <span className="text-xs text-gray-400">{h.date}</span>
               </div>
-              <p className="text-xs font-medium text-gray-700 truncate">{h.concern || "（相談内容）"}</p>
+              <p className="text-xs font-medium text-gray-200 truncate">{h.concern || "（相談内容）"}</p>
               <p className="text-xs text-gray-400 truncate mt-0.5">{h.summary}</p>
             </li>
           ))}
@@ -125,7 +125,7 @@ function CopyButton({ text, label = "コピー" }: { text: string; label?: strin
     <button
       onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
       aria-label={copied ? "コピーしました" : `${label}をクリップボードにコピーする`}
-      className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition-colors">
+      className="text-xs px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 font-medium transition-colors">
       {copied ? "コピー済み ✓" : label}
     </button>
   );
@@ -150,21 +150,30 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
           <button key={i} onClick={() => setActiveTab(i)}
             aria-label={`「${s.title}」セクションを表示する`}
             aria-pressed={activeTab === i}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeTab === i ? "bg-green-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+            className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeTab === i ? "bg-green-600 text-white" : "bg-white/10 text-gray-300 hover:bg-white/20"}`}>
             <span aria-hidden="true">{s.icon}</span><span className="hidden sm:inline">{s.title}</span>
           </button>
         ))}
       </div>
-      <div className="bg-white border border-gray-200 rounded-xl p-4 min-h-[360px]">
+      <div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl p-4 min-h-[360px]">
         <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-semibold text-gray-700">{section.icon} {section.title}</span>
+          <span className="text-sm font-semibold text-gray-200">{section.icon} {section.title}</span>
           <CopyButton text={section.content} />
         </div>
-        <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{section.content}</pre>
+        <pre className="text-sm text-gray-200 whitespace-pre-wrap font-sans leading-relaxed">{section.content}</pre>
       </div>
-      <div className="flex gap-2 justify-end">
+      <div className="flex gap-2 justify-end flex-wrap">
         <CopyButton text={parsed.raw} label="全文コピー" />
-        <button onClick={handlePrint} aria-label="アドバイス内容を印刷してご家族と共有する" className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium">
+        <a
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("就活AIで自己PR・志望動機を自動生成しました！ #就活AI #就活 https://shukatu-ai.vercel.app/tool")}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="就活AIを使ったことをXにシェアする"
+          className="text-xs px-3 py-1.5 rounded-lg bg-black hover:bg-gray-800 text-white font-medium transition-colors"
+        >
+          Xでシェア
+        </a>
+        <button onClick={handlePrint} aria-label="アドバイス内容を印刷してご家族と共有する" className="text-xs px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 font-medium">
           印刷してご家族と共有
         </button>
       </div>
@@ -234,11 +243,11 @@ export default function ShukatsuTool() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900">
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}
-      <nav className="bg-white border-b px-6 py-4">
+      <nav className="backdrop-blur-sm bg-white/5 border-b border-white/10 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/" className="font-bold text-gray-900 flex items-center gap-2">
+          <Link href="/" aria-label="AI終活サポートのトップページへ戻る" className="font-bold text-white flex items-center gap-2">
             <svg viewBox="0 0 24 24" className="w-5 h-5 fill-green-600" aria-hidden="true">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
             </svg>
@@ -251,46 +260,46 @@ export default function ShukatsuTool() {
       </nav>
 
       <div className="max-w-5xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
+        <div className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
           <DiagnosisHistoryPanel />
         <form onSubmit={handleSubmit} className="space-y-4">
-          <h1 className="text-xl font-bold text-gray-900">あなたの状況を教えてください</h1>
-          {streak && streak.count > 0 && <div className="mt-2 inline-flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-3 py-1 text-sm"><span>{streak.count}日連続利用中</span></div>}
+          <h1 className="text-xl font-bold text-white">あなたの状況を教えてください</h1>
+          {streak && streak.count > 0 && <div className="mt-2 inline-flex items-center gap-2 bg-orange-500/20 border border-orange-400/30 rounded-full px-3 py-1 text-sm text-orange-300"><span>{streak.count}日連続利用中</span></div>}
           {streakMsg && <div className="text-orange-600 font-bold text-sm">{streakMsg}</div>}
-          <p className="text-sm text-gray-500">入力情報はAIアドバイス生成にのみ使用し、保存・第三者提供は一切行いません。</p>
+          <p className="text-sm text-gray-400">入力情報はAIアドバイス生成にのみ使用し、保存・第三者提供は一切行いません。</p>
 
           <div>
-            <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">年齢</label>
+            <label htmlFor="age" className="block text-sm font-medium text-gray-300 mb-1">年齢</label>
             <input id="age" type="number" value={age} onChange={e => setAge(e.target.value)} placeholder="例: 65"
               aria-label="年齢を入力してください"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+              className="w-full border border-white/20 bg-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
           </div>
 
           <div>
-            <label htmlFor="family" className="block text-sm font-medium text-gray-700 mb-1">家族構成</label>
+            <label htmlFor="family" className="block text-sm font-medium text-gray-300 mb-1">家族構成</label>
             <input id="family" type="text" value={family} onChange={e => setFamily(e.target.value)} placeholder="例: 配偶者・子供2人・孫1人"
               aria-label="家族構成を入力してください"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+              className="w-full border border-white/20 bg-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
           </div>
 
           <div>
-            <label htmlFor="assets" className="block text-sm font-medium text-gray-700 mb-1">資産状況（任意）</label>
+            <label htmlFor="assets" className="block text-sm font-medium text-gray-300 mb-1">資産状況（任意）</label>
             <input id="assets" type="text" value={assets} onChange={e => setAssets(e.target.value)} placeholder="例: 自宅・預貯金2000万・株式など"
               aria-label="資産状況（任意）"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+              className="w-full border border-white/20 bg-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
           </div>
 
           <div>
-            <label htmlFor="concern" className="block text-sm font-medium text-gray-700 mb-1">相談内容・不安なこと <span className="text-red-500">*</span></label>
+            <label htmlFor="concern" className="block text-sm font-medium text-gray-300 mb-1">相談内容・不安なこと <span className="text-red-400">*</span></label>
             <textarea id="concern" value={concern} onChange={e => setConcern(e.target.value)} rows={5} required
               placeholder="例: 遺言書を書きたいが何から始めればいいかわからない。相続で子供たちが揉めないようにしたい。認知症になった時の財産管理も心配。"
               aria-label="相談内容・不安なこと（必須）"
               aria-required="true"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none" />
+              className="w-full border border-white/20 bg-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none" />
             <p className="text-xs text-gray-400 mt-1">詳しく書くほど的確なアドバイスが得られます（{concern.length}/1000文字）</p>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-xs text-blue-800">
+          <div className="bg-blue-500/10 border border-blue-400/30 rounded-lg p-3 text-xs text-blue-200">
             ⚠️ <strong>重要</strong>：このアドバイスはAIによる参考情報です。<strong>相続・遺言・税務は弁護士・司法書士・税理士に、医療・介護の判断は医師・ケアマネージャーに</strong>ご相談ください。本サービスは専門家の代替ではありません。
           </div>
 
@@ -305,22 +314,22 @@ export default function ShukatsuTool() {
         </div>
 
         <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700 mb-2">アドバイス</label>
+          <label className="text-sm font-medium text-gray-300 mb-2">アドバイス</label>
           {loading ? (
-            <div className="flex-1 bg-white border border-gray-200 rounded-xl min-h-[420px] flex flex-col">
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
+            <div className="flex-1 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl min-h-[420px] flex flex-col">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500" aria-hidden="true" />
                 <span className="text-sm font-medium text-green-600" aria-live="polite" aria-atomic="true">AIがアドバイスを作成中...</span>
               </div>
               {streamingText ? (
                 <div className="flex-1 p-4 overflow-y-auto">
-                  <pre className="text-xs text-gray-600 whitespace-pre-wrap font-sans leading-relaxed">{streamingText.replace(/\nDONE:.*$/, "").slice(-800)}</pre>
+                  <pre className="text-xs text-gray-300 whitespace-pre-wrap font-sans leading-relaxed">{streamingText.replace(/\nDONE:.*$/, "").slice(-800)}</pre>
                 </div>
               ) : (
                 <div className="flex-1 flex items-center justify-center">
                   <div className="text-center">
                     <p className="text-xs text-gray-400 mt-2">優先事項 → エンディングノート → 相続対策</p>
-                    <p className="text-xs text-gray-300 mt-1">通常15〜20秒かかります</p>
+                    <p className="text-xs text-gray-500 mt-1">通常15〜20秒かかります</p>
                   </div>
                 </div>
               )}
@@ -328,27 +337,26 @@ export default function ShukatsuTool() {
           ) : parsed ? (
             <ResultTabs parsed={parsed} />
           ) : (
-            <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
-              <div className="text-4xl">🌸</div>
-              <p className="text-sm text-center font-medium text-gray-500">情報を入力して<br />「アドバイスをもらう」を押してください</p>
-              <div className="bg-gray-50 rounded-lg p-4 text-xs space-y-2 w-full max-w-[260px]">
-                <p className="font-semibold text-gray-600">生成される内容：</p>
-                <p className="text-gray-500">🚨 今すぐ着手すべきこと</p>
-                <p className="text-gray-500">📝 エンディングノート記載項目</p>
-                <p className="text-gray-500">💰 相続・財産対策</p>
-                <p className="text-gray-500">🏥 医療・介護の事前準備</p>
-                <p className="text-gray-500">📋 専門家費用の相場</p>
-                <p className="text-gray-500">💌 あなたへのメッセージ</p>
+            <div className="flex-1 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
+              <p className="text-sm text-center font-medium text-gray-400">情報を入力して<br />「アドバイスをもらう」を押してください</p>
+              <div className="bg-white/5 border border-white/10 rounded-lg p-4 text-xs space-y-2 w-full max-w-[260px]">
+                <p className="font-semibold text-gray-300">生成される内容：</p>
+                <p className="text-gray-400">今すぐ着手すべきこと</p>
+                <p className="text-gray-400">エンディングノート記載項目</p>
+                <p className="text-gray-400">相続・財産対策</p>
+                <p className="text-gray-400">医療・介護の事前準備</p>
+                <p className="text-gray-400">専門家費用の相場</p>
+                <p className="text-gray-400">あなたへのメッセージ</p>
               </div>
             </div>
           )}
         </div>
       </div>
 
-      <footer className="text-center py-6 text-xs text-gray-400 border-t mt-4 space-x-4">
-        <a href="/legal" className="hover:text-gray-600">特定商取引法に基づく表記</a>
-        <a href="/privacy" className="hover:text-gray-600">プライバシーポリシー</a>
-        <p className="mt-2 text-gray-300">本サービスはAI生成情報を提供します。法律・医療・税務判断は必ず専門家にご相談ください。</p>
+      <footer className="text-center py-6 text-xs text-gray-400 border-t border-white/10 mt-4 space-x-4">
+        <a href="/legal" aria-label="特定商取引法に基づく表記を確認する" className="hover:text-gray-300">特定商取引法に基づく表記</a>
+        <a href="/privacy" aria-label="プライバシーポリシーを確認する" className="hover:text-gray-300">プライバシーポリシー</a>
+        <p className="mt-2 text-gray-500">本サービスはAI生成情報を提供します。法律・医療・税務判断は必ず専門家にご相談ください。</p>
       </footer>
     </main>
   );
