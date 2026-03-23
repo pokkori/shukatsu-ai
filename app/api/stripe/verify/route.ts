@@ -27,8 +27,10 @@ export async function GET(req: NextRequest) {
     let plan = "once";
     if (subId) {
       const stripeSub = await stripe.subscriptions.retrieve(subId);
-      currentPeriodEnd = new Date(stripeSub.current_period_end * 1000).toISOString();
-      const priceId = stripeSub.items.data[0]?.price.id;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const sub = stripeSub as any;
+      currentPeriodEnd = new Date(sub.current_period_end * 1000).toISOString();
+      const priceId = sub.items?.data?.[0]?.price?.id;
       if (priceId === process.env.STRIPE_PRICE_BIZ) plan = "biz";
       else plan = "std";
     }

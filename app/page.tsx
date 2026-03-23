@@ -9,13 +9,13 @@ export const metadata: Metadata = {
 export default function ShukatsuLP() {
   return (
     <main className="min-h-screen bg-white">
-      <nav className="border-b border-gray-100 px-6 py-4">
+      <nav className="border-b border-gray-100 px-6 py-4" aria-label="メインナビゲーション">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <span className="font-bold text-gray-900 flex items-center gap-2">
             <svg viewBox="0 0 24 24" className="w-5 h-5 fill-green-600" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
             AI終活サポート
           </span>
-          <Link href="/tool" className="bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-700">無料で相談する</Link>
+          <Link href="/tool" aria-label="AI終活サポートに無料で相談する" className="bg-green-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-green-700">無料で相談する</Link>
         </div>
       </nav>
 
@@ -117,6 +117,7 @@ export default function ShukatsuLP() {
           href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("AI終活サポートで終活の悩みを相談してみた🌸 エンディングノート・相続・デジタル遺品まで丁寧にアドバイスしてくれる → https://shukatsu-ai.vercel.app #終活 #AI終活")}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="AI終活サポートをXでシェアする"
           className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
         >
           <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">

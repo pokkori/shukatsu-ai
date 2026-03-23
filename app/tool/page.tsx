@@ -123,6 +123,7 @@ export default function ShukatsuTool() {
   const [count, setCount] = useState(0);
   const [showPaywall, setShowPaywall] = useState(false);
   const [error, setError] = useState("");
+  const [streamingText, setStreamingText] = useState("");
 
   useEffect(() => { setCount(parseInt(localStorage.getItem(KEY) || "0")); }, []);
   const isLimit = count >= FREE_LIMIT;
@@ -130,7 +131,7 @@ export default function ShukatsuTool() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLimit) { setShowPaywall(true); return; }
-    setLoading(true); setParsed(null); setError("");
+    setLoading(true); setParsed(null); setError(""); setStreamingText("");
     try {
       const res = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ age, family, concern, assets }) });
       if (res.status === 429) { setShowPaywall(true); setLoading(false); return; }
@@ -142,7 +143,9 @@ export default function ShukatsuTool() {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        buffer += decoder.decode(value, { stream: true });
+        const chunk = decoder.decode(value, { stream: true });
+        buffer += chunk;
+        setStreamingText(buffer);
         const doneIdx = buffer.lastIndexOf("\nDONE:");
         if (doneIdx !== -1) {
           const fullText = buffer.slice(0, doneIdx);
@@ -154,6 +157,7 @@ export default function ShukatsuTool() {
             setCount(newCount);
             if (newCount >= FREE_LIMIT) setTimeout(() => setShowPaywall(true), 1500);
           } catch { /* ignore parse error */ }
+          setStreamingText("");
           setParsed(parseResult(fullText));
           break;
         }
@@ -164,7 +168,7 @@ export default function ShukatsuTool() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}}
+      {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}
       <nav className="bg-white border-b px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <Link href="/" className="font-bold text-gray-900 flex items-center gap-2">
@@ -231,13 +235,23 @@ export default function ShukatsuTool() {
         <div className="flex flex-col">
           <label className="text-sm font-medium text-gray-700 mb-2">アドバイス</label>
           {loading ? (
-            <div className="flex-1 bg-white border border-gray-200 rounded-xl flex items-center justify-center min-h-[420px]">
-              <div className="text-center">
-                <div className="text-4xl mb-3">🌸</div>
-                <p className="text-sm text-gray-500 font-medium">AIがアドバイスを作成中...</p>
-                <p className="text-xs text-gray-400 mt-2">🚨 優先事項 → 📝 エンディングノート → 💰 相続対策</p>
-                <p className="text-xs text-gray-300 mt-1">通常15〜20秒かかります</p>
+            <div className="flex-1 bg-white border border-gray-200 rounded-xl min-h-[420px] flex flex-col">
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500" aria-hidden="true" />
+                <span className="text-sm font-medium text-green-600" aria-live="polite" aria-atomic="true">AIがアドバイスを作成中...</span>
               </div>
+              {streamingText ? (
+                <div className="flex-1 p-4 overflow-y-auto">
+                  <pre className="text-xs text-gray-600 whitespace-pre-wrap font-sans leading-relaxed">{streamingText.replace(/\nDONE:.*$/, "").slice(-800)}</pre>
+                </div>
+              ) : (
+                <div className="flex-1 flex items-center justify-center">
+                  <div className="text-center">
+                    <p className="text-xs text-gray-400 mt-2">優先事項 → エンディングノート → 相続対策</p>
+                    <p className="text-xs text-gray-300 mt-1">通常15〜20秒かかります</p>
+                  </div>
+                </div>
+              )}
             </div>
           ) : parsed ? (
             <ResultTabs parsed={parsed} />
