@@ -5,9 +5,67 @@ import KomojuButton from "@/components/KomojuButton";
 
 const FREE_LIMIT = 3;
 const KEY = "shukatsu_count";
+const HISTORY_KEY = "shukatsu_history";
+const MAX_HISTORY = 5;
 
 type Section = { title: string; icon: string; content: string };
 type ParsedResult = { sections: Section[]; raw: string };
+
+interface DiagnosisHistory {
+  id: string;
+  date: string;
+  concern: string;
+  summary: string;
+}
+
+function saveHistory(concern: string, raw: string) {
+  try {
+    const existing: DiagnosisHistory[] = JSON.parse(localStorage.getItem(HISTORY_KEY) ?? "[]");
+    const item: DiagnosisHistory = {
+      id: Date.now().toString(),
+      date: new Date().toLocaleDateString("ja-JP"),
+      concern: concern.slice(0, 30),
+      summary: raw.slice(0, 80).replace(/\n/g, " "),
+    };
+    localStorage.setItem(HISTORY_KEY, JSON.stringify([item, ...existing].slice(0, MAX_HISTORY)));
+  } catch { /* noop */ }
+}
+
+function DiagnosisHistoryPanel() {
+  const [history, setHistory] = useState<DiagnosisHistory[]>([]);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    try { setHistory(JSON.parse(localStorage.getItem(HISTORY_KEY) ?? "[]")); } catch { /* noop */ }
+  }, []);
+  if (history.length === 0) return null;
+  return (
+    <div className="border border-green-200 rounded-xl mb-4 overflow-hidden bg-white">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        aria-label="過去の診断履歴を表示"
+        className="w-full flex items-center justify-between px-4 py-3 hover:bg-green-50 transition-colors text-left"
+      >
+        <span className="text-sm font-bold text-green-800">過去の診断履歴（直近{history.length}件）</span>
+        <span className="text-gray-400 text-xs">{open ? "▲" : "▼"}</span>
+      </button>
+      {open && (
+        <ul className="border-t border-green-100 divide-y divide-green-50">
+          {history.map(h => (
+            <li key={h.id} className="px-4 py-2">
+              <div className="flex items-center justify-between mb-0.5">
+                <span className="text-xs text-gray-500">{h.date}</span>
+              </div>
+              <p className="text-xs font-medium text-gray-700 truncate">{h.concern || "（相談内容）"}</p>
+              <p className="text-xs text-gray-400 truncate mt-0.5">{h.summary}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 function parseResult(text: string): ParsedResult {
   const sectionDefs = [
@@ -158,7 +216,9 @@ export default function ShukatsuTool() {
             if (newCount >= FREE_LIMIT) setTimeout(() => setShowPaywall(true), 1500);
           } catch { /* ignore parse error */ }
           setStreamingText("");
-          setParsed(parseResult(fullText));
+          const parsedResult = parseResult(fullText);
+          setParsed(parsedResult);
+          saveHistory(concern, fullText);
           break;
         }
       }
@@ -184,6 +244,8 @@ export default function ShukatsuTool() {
       </nav>
 
       <div className="max-w-5xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <DiagnosisHistoryPanel />
         <form onSubmit={handleSubmit} className="space-y-4">
           <h1 className="text-xl font-bold text-gray-900">あなたの状況を教えてください</h1>
           <p className="text-sm text-gray-500">入力情報はAIアドバイス生成にのみ使用し、保存・第三者提供は一切行いません。</p>
@@ -231,6 +293,7 @@ export default function ShukatsuTool() {
           </button>
           {error && <p className="text-sm text-red-500 text-center">{error}</p>}
         </form>
+        </div>
 
         <div className="flex flex-col">
           <label className="text-sm font-medium text-gray-700 mb-2">アドバイス</label>
