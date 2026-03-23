@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import KomojuButton from "@/components/KomojuButton";
+import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 
 const FREE_LIMIT = 3;
 const KEY = "shukatsu_count";
@@ -182,8 +183,13 @@ export default function ShukatsuTool() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [error, setError] = useState("");
   const [streamingText, setStreamingText] = useState("");
+  const [streak, setStreak] = useState<StreakData | null>(null);
+  const [streakMsg, setStreakMsg] = useState<string | null>(null);
 
-  useEffect(() => { setCount(parseInt(localStorage.getItem(KEY) || "0")); }, []);
+  useEffect(() => {
+    setCount(parseInt(localStorage.getItem(KEY) || "0"));
+    setStreak(loadStreak("shukatsu"));
+  }, []);
   const isLimit = count >= FREE_LIMIT;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -219,6 +225,7 @@ export default function ShukatsuTool() {
           const parsedResult = parseResult(fullText);
           setParsed(parsedResult);
           saveHistory(concern, fullText);
+          const s = updateStreak("shukatsu"); setStreak(s); const msg = getStreakMilestoneMessage(s.count); if (msg) setStreakMsg(msg);
           break;
         }
       }
@@ -248,6 +255,8 @@ export default function ShukatsuTool() {
           <DiagnosisHistoryPanel />
         <form onSubmit={handleSubmit} className="space-y-4">
           <h1 className="text-xl font-bold text-gray-900">あなたの状況を教えてください</h1>
+          {streak && streak.count > 0 && <div className="mt-2 inline-flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-3 py-1 text-sm"><span>{streak.count}日連続利用中</span></div>}
+          {streakMsg && <div className="text-orange-600 font-bold text-sm">{streakMsg}</div>}
           <p className="text-sm text-gray-500">入力情報はAIアドバイス生成にのみ使用し、保存・第三者提供は一切行いません。</p>
 
           <div>
