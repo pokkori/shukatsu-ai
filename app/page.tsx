@@ -45,7 +45,7 @@ function InteractiveChecker() {
           ))}
         </div>
         {selected && (
-          <div className="mt-8 text-center animate-fade-in">
+          <div className="mt-8 text-center animate-fade-in backdrop-blur-sm">
             <p className="text-green-300 font-bold text-base mb-4">
               AIがその悩みをお手伝いできます
             </p>
@@ -86,7 +86,7 @@ export default function ShukatsuLP() {
       </nav>
 
       <section className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <div className="inline-block bg-green-500/20 text-green-300 text-xs font-medium px-3 py-1 rounded-full mb-6 border border-green-400/30">
+        <div className="inline-block backdrop-blur-sm bg-green-500/20 text-green-300 text-xs font-medium px-3 py-1 rounded-full mb-6 border border-green-400/30">
           50代・60代・70代の方へ
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
@@ -112,7 +112,7 @@ export default function ShukatsuLP() {
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl font-bold text-center mb-10 text-white">こんなお悩みはありませんか？</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          <div className="backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
             {[
               "何から始めればいいかわからない",
               "家族に話すタイミングがわからない",
@@ -157,7 +157,7 @@ export default function ShukatsuLP() {
       <section className="py-16 px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10 text-white">利用者の声</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="backdrop-blur-sm grid md:grid-cols-3 gap-6">
             {[
               { name: "Yさん（65歳・主婦）", text: "エンディングノートの書き方がわからず後回しにしていました。AIが質問に答えていく形式なので、気づいたら30分で基本的な内容が完成していました。" },
               { name: "Kさん（58歳・会社員）", text: "相続や遺言について専門家に相談するのは敷居が高かった。AIに状況を入力したら分かりやすく説明してくれて、何を準備すればいいか整理できました。" },
@@ -175,7 +175,7 @@ export default function ShukatsuLP() {
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-bold mb-10 text-white">料金プラン</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div className="backdrop-blur-sm grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
               { name: "お試し", price: "無料", limit: "3回まで", url: "/tool", highlight: false },
               { name: "スタンダード", price: "¥980/月", limit: "月30回", url: "/tool", highlight: true },

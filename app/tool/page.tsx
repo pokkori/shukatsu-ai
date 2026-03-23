@@ -299,7 +299,7 @@ export default function ShukatsuTool() {
             <p className="text-xs text-gray-400 mt-1">詳しく書くほど的確なアドバイスが得られます（{concern.length}/1000文字）</p>
           </div>
 
-          <div className="bg-blue-500/10 border border-blue-400/30 rounded-lg p-3 text-xs text-blue-200">
+          <div className="backdrop-blur-sm bg-blue-500/10 border border-blue-400/30 rounded-lg p-3 text-xs text-blue-200">
             ⚠️ <strong>重要</strong>：このアドバイスはAIによる参考情報です。<strong>相続・遺言・税務は弁護士・司法書士・税理士に、医療・介護の判断は医師・ケアマネージャーに</strong>ご相談ください。本サービスは専門家の代替ではありません。
           </div>
 
@@ -339,7 +339,7 @@ export default function ShukatsuTool() {
           ) : (
             <div className="flex-1 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
               <p className="text-sm text-center font-medium text-gray-400">情報を入力して<br />「アドバイスをもらう」を押してください</p>
-              <div className="bg-white/5 border border-white/10 rounded-lg p-4 text-xs space-y-2 w-full max-w-[260px]">
+              <div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-lg p-4 text-xs space-y-2 w-full max-w-[260px]">
                 <p className="font-semibold text-gray-300">生成される内容：</p>
                 <p className="text-gray-400">今すぐ着手すべきこと</p>
                 <p className="text-gray-400">エンディングノート記載項目</p>
