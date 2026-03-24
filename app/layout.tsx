@@ -34,7 +34,7 @@ const breadcrumbLd = {
   "@type": "BreadcrumbList",
   "itemListElement": [
     { "@type": "ListItem", "position": 1, "name": "ホーム", "item": SITE_URL },
-    { "@type": "ListItem", "position": 2, "name": "就活AIツール", "item": `${SITE_URL}/tool` },
+    { "@type": "ListItem", "position": 2, "name": "終活サポートツール", "item": `${SITE_URL}/tool` },
   ],
 };
 

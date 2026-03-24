@@ -165,10 +165,10 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
       <div className="flex gap-2 justify-end flex-wrap">
         <CopyButton text={parsed.raw} label="全文コピー" />
         <a
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("就活AIで自己PR・志望動機を自動生成しました！ #就活AI #就活 https://shukatu-ai.vercel.app/tool")}`}
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AI終活サポートでエンディングノートを作成しました！ #終活 #終活AI https://shukatsu-ai.vercel.app/tool")}`}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="就活AIを使ったことをXにシェアする"
+          aria-label="AI終活サポートをXにシェアする"
           className="text-xs px-3 py-1.5 rounded-lg bg-black hover:bg-gray-800 text-white font-medium transition-colors"
         >
           Xでシェア
