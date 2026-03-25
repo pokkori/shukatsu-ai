@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import FeedbackButton from "@/components/FeedbackButton";
 import "./globals.css";
 
 
@@ -17,13 +18,13 @@ export const metadata: Metadata = {
     siteName: "AI終活サポート",
     locale: "ja_JP",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "AI終活サポート" }],
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: "AI終活サポート" }],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
-    images: ["/og.png"],
+    images: [`${SITE_URL}/opengraph-image`],
   },
   metadataBase: new URL(SITE_URL),
   manifest: "/manifest.json",
@@ -81,8 +82,73 @@ const jsonLd = {
         "@type": "Answer",
         "text": "3回まで完全無料でご利用いただけます。それ以上ご利用の場合は、月額980円（月30回）またはビジネスプラン月額2,980円（無制限＋書類テンプレート付き）をご用意しています。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "認知症になった場合の財産管理はどうすればいいですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "認知症に備えるには、任意後見制度・家族信託・法定後見制度の3つが主な選択肢です。AI終活サポートでは、あなたの家族構成・資産状況に応じて最適な方法をAIが提案します。早めの準備が大切です。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "医療・介護の意思表示はどうやって残せばいいですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "尊厳死宣言・リビングウィル・ACP（人生会議）として知られる医療意思表示文書の作成をAIがサポートします。延命治療の希望・臓器提供の意思・在宅介護の希望など、ご家族や医療者に伝えたい内容を整理できます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "お葬式・お墓の準備はいつ始めればいいですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "葬儀・お墓の準備は元気なうちに始めることを推奨します。希望する葬儀の形式（家族葬・一般葬・直葬）、お墓の種類（一般墓・樹木葬・納骨堂）、費用の目安などをAIが詳しく説明します。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "家族に迷惑をかけずに終活を進めるにはどうすればいいですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "終活で最も大切なのは家族とのコミュニケーションです。AI終活サポートでは、家族に伝えるべき情報のリスト化・財産目録の作成・エンディングノートの印刷機能を提供しています。ご家族と一緒に確認できるよう設計されています。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "スマートフォンでも使えますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい、スマートフォン・タブレット・パソコンのすべてに対応しています。ブラウザさえあれば、アプリのインストールは不要です。入力した情報は外部サーバーに保存されず、安心してご利用いただけます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "生成されたアドバイスは法的に有効ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "AI終活サポートのアドバイスは参考情報の提供を目的としており、法的効力はありません。遺言書の作成・相続手続き・成年後見などの法的手続きは、必ず弁護士・司法書士・税理士などの専門家にご相談ください。"
+      }
     }
   ]
+};
+
+const webAppLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI終活サポート",
+  "url": SITE_URL,
+  "applicationCategory": "LifestyleApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "JPY",
+    "description": "3回まで無料。月額¥980でご利用無制限"
+  },
+  "description": DESC
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -97,9 +163,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppLd) }}
+        />
       </head>
       <body className="antialiased">
         {children}
+        <FeedbackButton />
         <Analytics />
       </body>
     </html>
