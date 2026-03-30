@@ -70,12 +70,12 @@ function DiagnosisHistoryPanel() {
 
 function parseResult(text: string): ParsedResult {
   const sectionDefs = [
-    { key: "今すぐ着手すべきこと", icon: "🚨" },
-    { key: "エンディングノート記載必須項目", icon: "📝" },
-    { key: "相続・財産対策", icon: "💰" },
-    { key: "医療・介護の事前準備", icon: "🏥" },
-    { key: "専門家に相談すべきケース", icon: "📋" },
-    { key: "あなたへのメッセージ", icon: "💌" },
+    { key: "今すぐ着手すべきこと", icon: "1." },
+    { key: "エンディングノート記載必須項目", icon: "2." },
+    { key: "相続・財産対策", icon: "3." },
+    { key: "医療・介護の事前準備", icon: "4." },
+    { key: "専門家に相談すべきケース", icon: "5." },
+    { key: "あなたへのメッセージ", icon: "6." },
   ];
   const sections: Section[] = [];
   const parts = text.split(/^---$/m);
@@ -89,7 +89,7 @@ function parseResult(text: string): ParsedResult {
     }
   }
   if (sections.length === 0) {
-    sections.push({ title: "アドバイス", icon: "📄", content: text });
+    sections.push({ title: "アドバイス", icon: "-", content: text });
   }
   return { sections, raw: text };
 }
@@ -97,11 +97,11 @@ function parseResult(text: string): ParsedResult {
 function Paywall({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-      <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
-        <div className="text-3xl mb-3">🌸</div>
-        <h2 className="text-lg font-bold mb-2">無料相談回数を使い切りました</h2>
-        <p className="text-sm text-gray-500 mb-1">詳細な終活アドバイスを受け取る</p>
-        <ul className="text-xs text-gray-400 text-left mb-5 space-y-1 mt-3">
+      <div className="rounded-2xl p-6 max-w-sm w-full shadow-xl text-center" style={{ background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.2)' }}>
+        <div className="mb-3 flex justify-center"><svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="#6366F1" opacity="0.2"/><path d="M20 10c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm1 15h-2v-6h2v6zm0-8h-2v-2h2v2z" fill="#8B5CF6"/></svg></div>
+        <h2 className="text-lg font-bold mb-2 text-white">無料相談回数を使い切りました</h2>
+        <p className="text-sm text-gray-300 mb-1">詳細な終活アドバイスを受け取る</p>
+        <ul className="text-xs text-gray-300 text-left mb-5 space-y-1 mt-3">
           <li>✓ 相続・財産対策の詳細アドバイス</li>
           <li>✓ 医療・介護の事前準備ガイド</li>
           <li>✓ 専門家費用の相場情報（一覧表付き）</li>
@@ -113,7 +113,7 @@ function Paywall({ onClose }: { onClose: () => void }) {
           <KomojuButton planId="standard" planLabel="月額プラン ¥980/月（何度でも相談）"
             className="block w-full bg-gray-100 text-gray-700 py-2.5 rounded-xl text-sm hover:bg-gray-200" />
         </div>
-        <button onClick={onClose} aria-label="プレミアムプランのモーダルを閉じる" className="text-xs text-gray-400">閉じる</button>
+        <button onClick={onClose} aria-label="プレミアムプランのモーダルを閉じる" className="text-xs text-gray-400 hover:text-white transition-colors min-h-[44px] min-w-[44px]">閉じる</button>
       </div>
     </div>
   );
@@ -155,7 +155,7 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
           </button>
         ))}
       </div>
-      <div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl p-4 min-h-[360px]">
+      <div className="backdrop-blur-md border border-white/10 rounded-xl p-4 min-h-[360px] border-l-4 border-l-indigo-500" style={{ background: 'rgba(255,255,255,0.05)' }}>
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-semibold text-gray-200">{section.icon} {section.title}</span>
           <CopyButton text={section.content} />
@@ -172,6 +172,16 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
           className="text-xs px-3 py-1.5 rounded-lg bg-black hover:bg-gray-800 text-white font-medium transition-colors"
         >
           Xでシェア
+        </a>
+        <a
+          href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent("https://shukatsu-ai.vercel.app/tool")}&text=${encodeURIComponent("AI終活サポートでエンディングノートを作成しました！家族と共有しましょう #終活 #終活AI")}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="AI終活サポートの結果をLINEで家族に共有する"
+          className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-[#06C755] hover:bg-[#05b34c] text-white font-medium transition-colors"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.477 2 2 6.124 2 11.207c0 2.816 1.394 5.312 3.567 6.949-.157.584-.509 2.125-.584 2.453-.09.397.145.39.305.284.125-.083 1.978-1.301 2.78-1.831.636.09 1.293.138 1.932.138 5.523 0 10-4.124 10-9.207C20 6.124 17.523 2 12 2z"/></svg>
+          LINEで家族に共有
         </a>
         <button onClick={handlePrint} aria-label="アドバイス内容を印刷してご家族と共有する" className="text-xs px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 font-medium">
           印刷してご家族と共有
@@ -243,7 +253,7 @@ export default function ShukatsuTool() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-green-900 to-slate-900">
+    <main className="min-h-screen" style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(120,119,198,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(255,119,198,0.1) 0%, transparent 50%), #0F0F1A' }}>
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}
       <nav className="backdrop-blur-sm bg-white/5 border-b border-white/10 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
@@ -263,7 +273,7 @@ export default function ShukatsuTool() {
         <div className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
           <DiagnosisHistoryPanel />
         <form onSubmit={handleSubmit} className="space-y-4">
-          <h1 className="text-xl font-bold text-white">あなたの状況を教えてください</h1>
+          <h1 className="text-xl font-bold bg-gradient-to-r from-green-300 via-emerald-200 to-teal-300 bg-clip-text text-transparent">あなたの状況を教えてください</h1>
           {streak && streak.count > 0 && <div className="mt-2 inline-flex items-center gap-2 bg-orange-500/20 border border-orange-400/30 rounded-full px-3 py-1 text-sm text-orange-300"><span>{streak.count}日連続利用中</span></div>}
           {streakMsg && <div className="text-orange-600 font-bold text-sm">{streakMsg}</div>}
           <p className="text-sm text-gray-400">入力情報はAIアドバイス生成にのみ使用し、保存・第三者提供は一切行いません。</p>
@@ -272,21 +282,21 @@ export default function ShukatsuTool() {
             <label htmlFor="age" className="block text-sm font-medium text-gray-300 mb-1">年齢</label>
             <input id="age" type="number" value={age} onChange={e => setAge(e.target.value)} placeholder="例: 65"
               aria-label="年齢を入力してください"
-              className="w-full border border-white/20 bg-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+              className="w-full border border-white/20 bg-white/5 backdrop-blur-sm text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all" />
           </div>
 
           <div>
             <label htmlFor="family" className="block text-sm font-medium text-gray-300 mb-1">家族構成</label>
             <input id="family" type="text" value={family} onChange={e => setFamily(e.target.value)} placeholder="例: 配偶者・子供2人・孫1人"
               aria-label="家族構成を入力してください"
-              className="w-full border border-white/20 bg-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+              className="w-full border border-white/20 bg-white/5 backdrop-blur-sm text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all" />
           </div>
 
           <div>
             <label htmlFor="assets" className="block text-sm font-medium text-gray-300 mb-1">資産状況（任意）</label>
             <input id="assets" type="text" value={assets} onChange={e => setAssets(e.target.value)} placeholder="例: 自宅・預貯金2000万・株式など"
               aria-label="資産状況（任意）"
-              className="w-full border border-white/20 bg-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+              className="w-full border border-white/20 bg-white/5 backdrop-blur-sm text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all" />
           </div>
 
           <div>
@@ -295,18 +305,19 @@ export default function ShukatsuTool() {
               placeholder="例: 遺言書を書きたいが何から始めればいいかわからない。相続で子供たちが揉めないようにしたい。認知症になった時の財産管理も心配。"
               aria-label="相談内容・不安なこと（必須）"
               aria-required="true"
-              className="w-full border border-white/20 bg-white/10 text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-none" />
+              className="w-full border border-white/20 bg-white/5 backdrop-blur-sm text-white placeholder-gray-400 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all resize-none" />
             <p className="text-xs text-gray-400 mt-1">詳しく書くほど的確なアドバイスが得られます（{concern.length}/1000文字）</p>
           </div>
 
           <div className="backdrop-blur-sm bg-blue-500/10 border border-blue-400/30 rounded-lg p-3 text-xs text-blue-200">
-            ⚠️ <strong>重要</strong>：このアドバイスはAIによる参考情報です。<strong>相続・遺言・税務は弁護士・司法書士・税理士に、医療・介護の判断は医師・ケアマネージャーに</strong>ご相談ください。本サービスは専門家の代替ではありません。
+            <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 inline-block mr-1 text-blue-300 shrink-0" aria-hidden="true"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/></svg> <strong>重要</strong>：このアドバイスはAIによる参考情報です。<strong>相続・遺言・税務は弁護士・司法書士・税理士に、医療・介護の判断は医師・ケアマネージャーに</strong>ご相談ください。本サービスは専門家の代替ではありません。
           </div>
 
           <button type="submit" disabled={loading}
             aria-label={loading ? "アドバイスを作成中です" : isLimit ? "有料プランに申し込む" : "終活アドバイスをもらう（無料）"}
             aria-busy={loading}
-            className={`w-full font-medium py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-green-600 hover:bg-green-700 disabled:bg-green-300"}`}>
+            className={`w-full font-medium py-3 rounded-xl text-white transition-all min-h-[44px] ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "disabled:opacity-50"}`}
+            style={!isLimit ? { background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', boxShadow: '0 0 20px rgba(99,102,241,0.4)' } : undefined}>
             {loading ? "アドバイスを作成中..." : isLimit ? "有料プランに申し込む" : "終活アドバイスをもらう（無料）"}
           </button>
           {error && <p className="text-sm text-red-500 text-center">{error}</p>}
@@ -326,11 +337,14 @@ export default function ShukatsuTool() {
                   <pre className="text-xs text-gray-300 whitespace-pre-wrap font-sans leading-relaxed">{streamingText.replace(/\nDONE:.*$/, "").slice(-800)}</pre>
                 </div>
               ) : (
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="text-center">
-                    <p className="text-xs text-gray-400 mt-2">優先事項 → エンディングノート → 相続対策</p>
-                    <p className="text-xs text-gray-500 mt-1">通常15〜20秒かかります</p>
-                  </div>
+                <div className="flex-1 p-4 space-y-3">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="animate-pulse space-y-2">
+                      <div className="h-3 bg-white/10 rounded-full" style={{ width: `${60 + Math.random() * 30}%` }} />
+                      <div className="h-2 bg-white/5 rounded-full" style={{ width: `${40 + Math.random() * 40}%` }} />
+                    </div>
+                  ))}
+                  <p className="text-xs text-gray-500 text-center mt-4">通常15〜20秒かかります</p>
                 </div>
               )}
             </div>

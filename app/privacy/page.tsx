@@ -7,79 +7,85 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-white">
-      <nav className="border-b border-gray-100 px-6 py-4">
+    <main className="min-h-screen relative" style={{ background: "linear-gradient(135deg, #0f0b15 0%, #1a1333 25%, #0d1f2d 50%, #1a1333 75%, #0f0b15 100%)" }}>
+      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-[0.07]" style={{ background: "radial-gradient(circle, #6366f1, transparent 70%)" }} />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-[0.05]" style={{ background: "radial-gradient(circle, #8b5cf6, transparent 70%)" }} />
+      </div>
+
+      <nav className="relative z-10 border-b border-white/5 px-6 py-4">
         <div className="max-w-3xl mx-auto">
-          <Link href="/" className="text-sm text-gray-500 hover:text-gray-800">← トップに戻る</Link>
+          <Link href="/" className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors">← トップに戻る</Link>
         </div>
       </nav>
 
-      <article className="max-w-3xl mx-auto px-6 py-12">
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">プライバシーポリシー</h1>
+      <article className="relative z-10 max-w-3xl mx-auto px-6 py-12">
+        <h1 className="text-2xl font-bold mb-2 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">プライバシーポリシー</h1>
+        <p className="text-sm text-slate-500 mb-8">最終更新日：2026年3月</p>
 
-        <p className="text-sm text-gray-500 mb-8">最終更新日：2026年3月</p>
+        <div className="rounded-2xl p-6 sm:p-8" style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <section className="space-y-8 text-sm text-slate-300 leading-relaxed">
+            <div className="border-b border-white/5 pb-6">
+              <h2 className="font-bold text-slate-100 mb-2">1. 事業者情報</h2>
+              <p>本サービス「AI終活サポート」（以下「本サービス」）は、個人が運営するWebサービスです。</p>
+            </div>
 
-        <section className="space-y-8 text-sm text-gray-700 leading-relaxed">
-          <div>
-            <h2 className="font-bold text-gray-900 mb-2">1. 事業者情報</h2>
-            <p>本サービス「AI終活サポート」（以下「本サービス」）は、個人が運営するWebサービスです。</p>
-          </div>
+            <div className="border-b border-white/5 pb-6">
+              <h2 className="font-bold text-slate-100 mb-2">2. 取得する情報</h2>
+              <p>本サービスでは、以下の情報を取得する場合があります。</p>
+              <ul className="list-disc list-inside mt-2 space-y-1 text-slate-400">
+                <li>フォームに入力いただいた情報（年齢・家族構成・相談内容など）</li>
+                <li>Cookie（利用回数の管理に使用）</li>
+                <li>アクセスログ（IPアドレス・ブラウザ情報）</li>
+              </ul>
+            </div>
 
-          <div>
-            <h2 className="font-bold text-gray-900 mb-2">2. 取得する情報</h2>
-            <p>本サービスでは、以下の情報を取得する場合があります。</p>
-            <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>フォームに入力いただいた情報（年齢・家族構成・相談内容など）</li>
-              <li>Cookie（利用回数の管理に使用）</li>
-              <li>アクセスログ（IPアドレス・ブラウザ情報）</li>
-            </ul>
-          </div>
+            <div className="border-b border-white/5 pb-6">
+              <h2 className="font-bold text-slate-100 mb-2">3. 利用目的</h2>
+              <ul className="list-disc list-inside mt-2 space-y-1 text-slate-400">
+                <li>AIによる終活アドバイスの提供</li>
+                <li>無料利用回数の管理</li>
+                <li>不正利用の防止</li>
+                <li>サービス改善のための利用状況分析</li>
+              </ul>
+            </div>
 
-          <div>
-            <h2 className="font-bold text-gray-900 mb-2">3. 利用目的</h2>
-            <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>AIによる終活アドバイスの提供</li>
-              <li>無料利用回数の管理</li>
-              <li>不正利用の防止</li>
-              <li>サービス改善のための利用状況分析</li>
-            </ul>
-          </div>
+            <div className="border-b border-white/5 pb-6">
+              <h2 className="font-bold text-slate-100 mb-2">4. 第三者提供</h2>
+              <p>取得した情報は、以下の場合を除き第三者に提供しません。</p>
+              <ul className="list-disc list-inside mt-2 space-y-1 text-slate-400">
+                <li>法令に基づく場合</li>
+                <li>AI生成のためにAnthropicのAPIへ入力内容を送信する場合（Anthropicのプライバシーポリシーが適用されます）</li>
+                <li>決済処理のためPAY.JP（PAY.JP株式会社）に提供する場合（PAY.JPのプライバシーポリシーに従います）</li>
+              </ul>
+            </div>
 
-          <div>
-            <h2 className="font-bold text-gray-900 mb-2">4. 第三者提供</h2>
-            <p>取得した情報は、以下の場合を除き第三者に提供しません。</p>
-            <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>法令に基づく場合</li>
-              <li>AI生成のためにAnthropicのAPIへ入力内容を送信する場合（Anthropicのプライバシーポリシーが適用されます）</li>
-              <li>決済処理のためPAY.JP（PAY.JP株式会社）に提供する場合（PAY.JPのプライバシーポリシーに従います）</li>
-            </ul>
-          </div>
+            <div className="border-b border-white/5 pb-6">
+              <h2 className="font-bold text-slate-100 mb-2">5. Cookieの使用</h2>
+              <p>本サービスでは、無料利用回数を管理するためにCookieを使用しています。ブラウザの設定によりCookieを無効にすることができますが、一部機能が正常に動作しない場合があります。</p>
+            </div>
 
-          <div>
-            <h2 className="font-bold text-gray-900 mb-2">5. Cookieの使用</h2>
-            <p>本サービスでは、無料利用回数を管理するためにCookieを使用しています。ブラウザの設定によりCookieを無効にすることができますが、一部機能が正常に動作しない場合があります。</p>
-          </div>
+            <div className="border-b border-white/5 pb-6">
+              <h2 className="font-bold text-slate-100 mb-2">6. アクセス解析</h2>
+              <p>本サービスでは、Vercel Analyticsを使用してアクセス状況を分析しています。個人を特定する情報は収集しません。</p>
+            </div>
 
-          <div>
-            <h2 className="font-bold text-gray-900 mb-2">6. アクセス解析</h2>
-            <p>本サービスでは、Vercel Analyticsを使用してアクセス状況を分析しています。個人を特定する情報は収集しません。</p>
-          </div>
+            <div className="border-b border-white/5 pb-6">
+              <h2 className="font-bold text-slate-100 mb-2">7. 免責事項</h2>
+              <p>本サービスが提供するコンテンツはAIによる情報提供であり、法律・税務・医療の専門的アドバイスではありません。相続・医療・介護に関する具体的な判断は、必ず専門家（弁護士・税理士・医師等）にご相談ください。</p>
+            </div>
 
-          <div>
-            <h2 className="font-bold text-gray-900 mb-2">7. 免責事項</h2>
-            <p>本サービスが提供するコンテンツはAIによる情報提供であり、法律・税務・医療の専門的アドバイスではありません。相続・医療・介護に関する具体的な判断は、必ず専門家（弁護士・税理士・医師等）にご相談ください。</p>
-          </div>
+            <div className="border-b border-white/5 pb-6">
+              <h2 className="font-bold text-slate-100 mb-2">8. ポリシーの変更</h2>
+              <p>本ポリシーは予告なく変更する場合があります。変更後は本ページに掲載した時点で効力を生じます。</p>
+            </div>
 
-          <div>
-            <h2 className="font-bold text-gray-900 mb-2">8. ポリシーの変更</h2>
-            <p>本ポリシーは予告なく変更する場合があります。変更後は本ページに掲載した時点で効力を生じます。</p>
-          </div>
-
-          <div>
-            <h2 className="font-bold text-gray-900 mb-2">9. お問い合わせ</h2>
-            <p>本ポリシーに関するご質問は X(Twitter) @levona_design へのDM までご連絡ください。</p>
-          </div>
-        </section>
+            <div>
+              <h2 className="font-bold text-slate-100 mb-2">9. お問い合わせ</h2>
+              <p>本ポリシーに関するご質問は X(Twitter) @levona_design へのDM までご連絡ください。</p>
+            </div>
+          </section>
+        </div>
       </article>
     </main>
   );
