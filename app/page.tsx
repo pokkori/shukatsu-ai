@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ShareButtons } from "@/components/ShareButtons";
+import { AdBanner } from "@/components/AdBanner";
 
 const worries = [
   { id: "note", label: "終活ノートを作りたい", desc: "エンディングノートの書き方がわからない" },
@@ -251,25 +253,9 @@ export default function ShukatsuLP() {
         </Link>
       </section>
 
-      {/* X Share */}
+      {/* シェアセクション */}
       <section className="py-8 px-4 text-center">
-        <a
-          href={
-            "https://twitter.com/intent/tweet?text=" +
-            encodeURIComponent(
-              "AI終活サポートで終活の悩みを相談してみた 終活 エンディングノート・相続・デジタル遺品まで丁寧にアドバイスしてくれる → https://shukatsu-ai.vercel.app #終活 #AI終活"
-            )
-          }
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="AI終活サポートをXでシェアする"
-          className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
-        >
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-          </svg>
-          Xでシェアする
-        </a>
+        <ShareButtons url="https://shukatsu-ai.vercel.app" text="AI終活サポートを使ってみた！" hashtags="終活AI" />
       </section>
 
       <footer className="border-t border-white/10 py-6 text-center text-xs text-gray-400 space-y-2 relative z-10">
@@ -288,6 +274,7 @@ export default function ShukatsuLP() {
           </Link>
         </p>
       </footer>
+      <AdBanner slot="" />
     </main>
   );
 }
