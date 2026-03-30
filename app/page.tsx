@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { ShareButtons } from "@/components/ShareButtons";
 import { AdBanner } from "@/components/AdBanner";
+import { StreakBanner } from "@/components/StreakBanner";
+import { UsageCounter } from "@/components/UsageCounter";
 
 const worries = [
   { id: "note", label: "終活ノートを作りたい", desc: "エンディングノートの書き方がわからない" },
@@ -102,6 +104,8 @@ export default function ShukatsuLP() {
         </div>
       </nav>
 
+      <StreakBanner />
+
       <section className="max-w-4xl mx-auto px-6 py-20 text-center relative z-10">
         <div className="inline-block text-emerald-300 text-xs font-medium px-4 py-1.5 rounded-full mb-6" style={{ background: 'rgba(16, 185, 129, 0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(52, 211, 153, 0.25)' }}>
           50代・60代・70代の方へ
@@ -114,6 +118,7 @@ export default function ShukatsuLP() {
         <p className="text-lg text-gray-300 mb-8 max-w-xl mx-auto">
           エンディングノート・相続・デジタル遺品・医療の意思表示。あなたの状況に合わせたアドバイスをAIが丁寧にお伝えします。
         </p>
+        <div className="max-w-xs mx-auto mb-4"><UsageCounter /></div>
         <Link
           href="/tool"
           aria-label="AI終活サポートを無料で試す"
