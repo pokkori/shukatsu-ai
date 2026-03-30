@@ -6,6 +6,7 @@ import { ShareButtons } from "@/components/ShareButtons";
 import { AdBanner } from "@/components/AdBanner";
 import { StreakBanner } from "@/components/StreakBanner";
 import { UsageCounter } from "@/components/UsageCounter";
+import { CrossSell } from "@/components/CrossSell";
 
 const worries = [
   { id: "note", label: "終活ノートを作りたい", desc: "エンディングノートの書き方がわからない" },
@@ -125,8 +126,9 @@ export default function ShukatsuLP() {
           className="inline-block text-white font-bold text-lg px-8 py-4 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] min-h-[52px]"
           style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', boxShadow: '0 0 25px rgba(16, 185, 129, 0.35), 0 4px 15px rgba(0,0,0,0.3)' }}
         >
-          無料で相談する →
+          無料でAIに相談する →
         </Link>
+        <p className="text-xs opacity-60 mt-2">※登録不要・すぐに結果</p>
         <p className="text-xs text-gray-400 mt-3">クレジットカード不要・3回まで無料</p>
       </section>
 
@@ -308,6 +310,8 @@ export default function ShukatsuLP() {
       <section className="py-8 px-4 text-center">
         <ShareButtons url="https://shukatsu-ai.vercel.app" text="AI終活サポートを使ってみた！" hashtags="終活AI" />
       </section>
+
+      <CrossSell currentService="就活AI" />
 
       <footer className="border-t border-white/10 py-6 text-center text-xs text-gray-400 space-y-2 relative z-10">
         <p>AI終活サポート © 2026 ※本サービスは情報提供を目的としており、法律・税務・医療の専門的アドバイスではありません。</p>
