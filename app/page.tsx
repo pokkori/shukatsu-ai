@@ -7,6 +7,7 @@ import { AdBanner } from "@/components/AdBanner";
 import { StreakBanner } from "@/components/StreakBanner";
 import { UsageCounter } from "@/components/UsageCounter";
 import { CrossSell } from "@/components/CrossSell";
+import { TrustBadge } from "@/components/TrustBadge";
 
 const worries = [
   { id: "note", label: "終活ノートを作りたい", desc: "エンディングノートの書き方がわからない" },
@@ -120,6 +121,7 @@ export default function ShukatsuLP() {
           エンディングノート・相続・デジタル遺品・医療の意思表示。あなたの状況に合わせたアドバイスをAIが丁寧にお伝えします。
         </p>
         <div className="max-w-xs mx-auto mb-4"><UsageCounter /></div>
+        <TrustBadge />
         <Link
           href="/tool"
           aria-label="AI終活サポートを無料で試す"
