@@ -5,6 +5,34 @@ import { useTypewriter } from "@/lib/useTypewriter";
 import KomojuButton from "@/components/KomojuButton";
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 
+/* ---- 生成完了グロー点滅コンポーネント ---- */
+function ResultArea({ children, isNew }: { children: React.ReactNode; isNew: boolean }) {
+  const [glowing, setGlowing] = useState(false);
+
+  useEffect(() => {
+    if (isNew) {
+      setGlowing(true);
+      const t = setTimeout(() => setGlowing(false), 600);
+      return () => clearTimeout(t);
+    }
+  }, [isNew]);
+
+  return (
+    <div style={{
+      background: glowing
+        ? 'rgba(99,102,241,0.15)'
+        : 'rgba(255,255,255,0.05)',
+      boxShadow: glowing
+        ? '0 0 30px rgba(99,102,241,0.4), inset 0 0 20px rgba(99,102,241,0.1)'
+        : 'none',
+      transition: 'background 0.3s ease, box-shadow 0.3s ease',
+      borderRadius: '12px',
+    }}>
+      {children}
+    </div>
+  );
+}
+
 const FREE_LIMIT = 3;
 const KEY = "shukatsu_count";
 const HISTORY_KEY = "shukatsu_history";
@@ -210,6 +238,7 @@ export default function ShukatsuTool() {
   const [streamingText, setStreamingText] = useState("");
   const [streak, setStreak] = useState<StreakData | null>(null);
   const [streakMsg, setStreakMsg] = useState<string | null>(null);
+  const [isNewResult, setIsNewResult] = useState(false);
 
   useEffect(() => {
     setCount(parseInt(localStorage.getItem(KEY) || "0"));
@@ -220,7 +249,7 @@ export default function ShukatsuTool() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLimit) { setShowPaywall(true); return; }
-    setLoading(true); setParsed(null); setError(""); setStreamingText("");
+    setLoading(true); setParsed(null); setError(""); setStreamingText(""); setIsNewResult(false);
     try {
       const res = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ age, family, concern, assets }) });
       if (res.status === 429) { setShowPaywall(true); setLoading(false); return; }
@@ -249,6 +278,8 @@ export default function ShukatsuTool() {
           setStreamingText("");
           const parsedResult = parseResult(fullText);
           setParsed(parsedResult);
+          setIsNewResult(true);
+          setTimeout(() => setIsNewResult(false), 800);
           saveHistory(concern, fullText);
           const s = updateStreak("shukatsu"); setStreak(s); const msg = getStreakMilestoneMessage(s.count); if (msg) setStreakMsg(msg);
           break;
@@ -322,7 +353,7 @@ export default function ShukatsuTool() {
           <button type="submit" disabled={loading}
             aria-label={loading ? "アドバイスを作成中です" : isLimit ? "有料プランに申し込む" : "終活アドバイスをもらう（無料）"}
             aria-busy={loading}
-            className={`w-full font-medium py-3 rounded-xl text-white transition-all min-h-[44px] ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "disabled:opacity-50"}`}
+            className={`w-full font-medium py-3 rounded-xl text-white transition-all min-h-[44px] ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "disabled:opacity-50"} ${!loading && !isLimit ? "cta-pulse" : ""}`}
             style={!isLimit ? { background: 'linear-gradient(135deg, #6366F1, #8B5CF6)', boxShadow: '0 0 20px rgba(99,102,241,0.4)' } : undefined}>
             {loading ? "アドバイスを作成中..." : isLimit ? "有料プランに申し込む" : "終活アドバイスをもらう（無料）"}
           </button>
@@ -336,7 +367,7 @@ export default function ShukatsuTool() {
             <div className="flex-1 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl min-h-[420px] flex flex-col">
               <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-green-500" aria-hidden="true" />
-                <span className="text-sm font-medium text-green-600" aria-live="polite" aria-atomic="true">AIがアドバイスを作成中...</span>
+                <span className="text-sm font-medium text-green-600 typing-cursor" aria-live="polite" aria-atomic="true">AIがアドバイスを作成中</span>
               </div>
               {streamingText ? (
                 <div className="flex-1 p-4 overflow-y-auto">
@@ -357,7 +388,9 @@ export default function ShukatsuTool() {
               )}
             </div>
           ) : parsed ? (
-            <ResultTabs parsed={parsed} />
+            <ResultArea isNew={isNewResult}>
+              <ResultTabs parsed={parsed} />
+            </ResultArea>
           ) : (
             <div className="flex-1 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
               <p className="text-sm text-center font-medium text-gray-400">情報を入力して<br />「アドバイスをもらう」を押してください</p>
