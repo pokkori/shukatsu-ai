@@ -229,7 +229,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppLd) }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" style={{ background: '#0B0F1E' }}>
         <OrbBackground />
         <div style={{ position: "relative", zIndex: 1 }}>
           {children}
