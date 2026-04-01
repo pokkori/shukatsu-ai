@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useTypewriter } from "@/lib/useTypewriter";
 import KomojuButton from "@/components/KomojuButton";
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 
@@ -131,6 +132,11 @@ function CopyButton({ text, label = "コピー" }: { text: string; label?: strin
   );
 }
 
+function SectionContent({ content }: { content: string }) {
+  const displayed = useTypewriter(content, 15);
+  return <pre className="text-sm text-gray-200 whitespace-pre-wrap font-sans leading-relaxed">{displayed}</pre>;
+}
+
 function ResultTabs({ parsed }: { parsed: ParsedResult }) {
   const [activeTab, setActiveTab] = useState(0);
   const section = parsed.sections[activeTab];
@@ -160,7 +166,7 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
           <span className="text-sm font-semibold text-gray-200">{section.icon} {section.title}</span>
           <CopyButton text={section.content} />
         </div>
-        <pre className="text-sm text-gray-200 whitespace-pre-wrap font-sans leading-relaxed">{section.content}</pre>
+        <SectionContent content={section.content} />
       </div>
       <div className="flex gap-2 justify-end flex-wrap">
         <CopyButton text={parsed.raw} label="全文コピー" />
@@ -338,12 +344,14 @@ export default function ShukatsuTool() {
                 </div>
               ) : (
                 <div className="flex-1 p-4 space-y-3">
-                  {[...Array(6)].map((_, i) => (
-                    <div key={i} className="animate-pulse space-y-2">
-                      <div className="h-3 bg-white/10 rounded-full" style={{ width: `${60 + Math.random() * 30}%` }} />
-                      <div className="h-2 bg-white/5 rounded-full" style={{ width: `${40 + Math.random() * 40}%` }} />
-                    </div>
-                  ))}
+                  <div className="space-y-3">
+                    <div className="skeleton h-4 w-3/4" />
+                    <div className="skeleton h-4 w-full" />
+                    <div className="skeleton h-4 w-5/6" />
+                    <div className="skeleton h-4 w-2/3" />
+                    <div className="skeleton h-4 w-full" />
+                    <div className="skeleton h-4 w-4/5" />
+                  </div>
                   <p className="text-xs text-gray-500 text-center mt-4">通常15〜20秒かかります</p>
                 </div>
               )}
