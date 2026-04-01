@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useTypewriter } from "@/lib/useTypewriter";
 import KomojuButton from "@/components/KomojuButton";
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
+import ConfettiLaunch from "@/components/ConfettiLaunch";
 
 /* ---- 生成完了グロー点滅コンポーネント ---- */
 function ResultArea({ children, isNew }: { children: React.ReactNode; isNew: boolean }) {
@@ -18,15 +19,14 @@ function ResultArea({ children, isNew }: { children: React.ReactNode; isNew: boo
   }, [isNew]);
 
   return (
-    <div style={{
+    <div className="glass-dark rounded-xl" style={{
       background: glowing
         ? 'rgba(99,102,241,0.15)'
-        : 'rgba(255,255,255,0.05)',
+        : undefined,
       boxShadow: glowing
         ? '0 0 30px rgba(99,102,241,0.4), inset 0 0 20px rgba(99,102,241,0.1)'
-        : 'none',
+        : undefined,
       transition: 'background 0.3s ease, box-shadow 0.3s ease',
-      borderRadius: '12px',
     }}>
       {children}
     </div>
@@ -239,6 +239,7 @@ export default function ShukatsuTool() {
   const [streak, setStreak] = useState<StreakData | null>(null);
   const [streakMsg, setStreakMsg] = useState<string | null>(null);
   const [isNewResult, setIsNewResult] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     setCount(parseInt(localStorage.getItem(KEY) || "0"));
@@ -279,7 +280,9 @@ export default function ShukatsuTool() {
           const parsedResult = parseResult(fullText);
           setParsed(parsedResult);
           setIsNewResult(true);
+          setShowConfetti(true);
           setTimeout(() => setIsNewResult(false), 800);
+          setTimeout(() => setShowConfetti(false), 4000);
           saveHistory(concern, fullText);
           const s = updateStreak("shukatsu"); setStreak(s); const msg = getStreakMilestoneMessage(s.count); if (msg) setStreakMsg(msg);
           break;
@@ -291,6 +294,7 @@ export default function ShukatsuTool() {
 
   return (
     <main className="min-h-screen" style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(120,119,198,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(255,119,198,0.1) 0%, transparent 50%), #0F0F1A' }}>
+      <ConfettiLaunch trigger={showConfetti} message="アドバイス完成！" />
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}
       <nav className="backdrop-blur-sm bg-white/5 border-b border-white/10 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
