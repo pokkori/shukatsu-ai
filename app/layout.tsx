@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 import FeedbackButton from "@/components/FeedbackButton";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
+import OrbBackground from "@/components/OrbBackground";
 import "./globals.css";
 import { InstallPrompt } from "@/components/InstallPrompt";
 
@@ -141,6 +143,54 @@ const jsonLd = {
         "@type": "Answer",
         "text": "AI終活サポートのアドバイスは参考情報の提供を目的としており、法的効力はありません。遺言書の作成・相続手続き・成年後見などの法的手続きは、必ず弁護士・司法書士・税理士などの専門家にご相談ください。"
       }
+    },
+    {
+      "@type": "Question",
+      "name": "エンディングノートに「エンディングノート」とわかるようタイトルを付けられますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい、AIが生成した内容には「エンディングノート」「私の終活ノート」など任意のタイトルを付けて印刷・保存できます。ご家族が見つけたときにすぐ内容がわかるよう、表紙に名前・作成日・保管場所も記載することをAIがアドバイスします。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "家族に内緒で終活の準備を進めることはできますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい、本サービスはご本人だけがアクセスするブラウザ上で動作します。ご家族のアカウントや端末と共有されることはありません。ただし、終活の最終目的は「ご家族への伝達」です。準備が整った段階でご家族に共有されることを推奨しています。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "法的効力のある遺言書とエンディングノートの違いは何ですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "遺言書は法律に定められた形式（自筆証書・公正証書など）で作成することで法的効力を持ち、相続財産の分配を法的に指定できます。エンディングノートは法的効力はありませんが、財産以外の気持ち・希望・連絡先なども自由に残せます。本サービスはエンディングノートの作成をサポートするものです。法的効力のある遺言書作成は専門家（弁護士・公証役場）にご相談ください。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "医療意思表示書（アドバンス・ケア・プランニング）としても使えますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい、ACP（アドバンス・ケア・プランニング、人生会議）として活用できる医療意思表示の内容をAIがサポートします。延命治療の希望・痛みへの対処・看取りの場所・臓器提供の意思などを整理し、かかりつけ医やご家族と共有できる形で出力します。ただし、法的な効力については医療機関にご確認ください。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "ペットのことも終活に含められますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい、ペットの飼育引き継ぎについても終活の重要な項目として対応しています。ペットの種類・年齢・飼育状況・引き継ぎ先の希望などを入力することで、ペットのためのエンディングノート項目をAIが提案します。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "60代・70代・80代でも使いやすいですか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい、文字を大きく表示する設定や、シンプルな入力ステップで高齢の方にも使いやすい設計になっています。スマートフォンのブラウザからも利用でき、アプリのインストールは不要です。お子様やご家族が一緒にサポートしながら使うことも想定して設計されています。"
+      }
     }
   ]
 };
@@ -180,12 +230,23 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className="antialiased">
-        {children}
+        <OrbBackground />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          {children}
+        </div>
         <InstallPrompt />
         <FeedbackButton />
         <Analytics />
         <SpeedInsights />
         <GoogleAdScript />
+        {process.env.NEXT_PUBLIC_CLARITY_ID && process.env.NODE_ENV === 'production' && (
+          <Script
+            id="clarity-init"
+            strategy="afterInteractive"
+          >
+            {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${process.env.NEXT_PUBLIC_CLARITY_ID}");`}
+          </Script>
+        )}
       </body>
     </html>
   );
