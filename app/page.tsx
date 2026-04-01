@@ -329,6 +329,10 @@ export default function ShukatsuLP() {
           <Link href="/privacy" aria-label="プライバシーポリシーを確認する" className="underline hover:text-gray-600">
             プライバシーポリシー
           </Link>
+          {" "}・{" "}
+          <Link href="/business" aria-label="就活AI法人向けプランを見る" className="underline hover:text-gray-600">
+            法人向け
+          </Link>
         </p>
         <div className="flex items-center justify-center gap-2 text-xs text-gray-500 mt-4">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
