@@ -8,6 +8,7 @@ import { StreakBanner } from "@/components/StreakBanner";
 import { UsageCounter } from "@/components/UsageCounter";
 import { CrossSell } from "@/components/CrossSell";
 import { TrustBadge } from "@/components/TrustBadge";
+import KomojuButton from "@/components/KomojuButton";
 
 const worries = [
   { id: "note", label: "終活ノートを作りたい", desc: "エンディングノートの書き方がわからない" },
@@ -71,6 +72,9 @@ function InteractiveChecker() {
 }
 
 export default function ShukatsuLP() {
+  // 年額/月額トグル（デフォルト: 年額。「2ヶ月無料」のゼロ価格効果でCVR最大化）
+  const [isAnnual, setIsAnnual] = useState(true);
+
   return (
     <main className="min-h-screen relative overflow-hidden" style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(16, 185, 129, 0.12) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(52, 211, 153, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(99, 179, 237, 0.08) 0%, transparent 50%), #0F0F1A' }}>
       {/* Floating particles */}
@@ -209,44 +213,121 @@ export default function ShukatsuLP() {
 
       <section className="py-16 relative z-10">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-2xl font-bold mb-10 text-white">料金プラン</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {[
-              { name: "お試し", price: "無料", limit: "3回まで", url: "/tool", highlight: false },
-              { name: "スタンダード", price: "¥980/月", limit: "月30回", url: "/tool", highlight: true },
-              { name: "ビジネス", price: "¥2,980/月", limit: "無制限＋書類テンプレ", url: "/tool", highlight: false },
-            ].map((plan) => (
-              <div
-                key={plan.name}
-                className="rounded-2xl p-6 relative transition-all duration-300 hover:-translate-y-1"
-                style={{
-                  background: plan.highlight ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255,255,255,0.05)',
-                  backdropFilter: 'blur(12px)',
-                  border: plan.highlight ? '2px solid rgba(52, 211, 153, 0.4)' : '1px solid rgba(255,255,255,0.08)',
-                  boxShadow: plan.highlight ? '0 0 30px rgba(16, 185, 129, 0.15), 0 8px 32px rgba(0,0,0,0.2)' : '0 8px 32px rgba(0,0,0,0.15)',
-                }}
-              >
-                {plan.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs text-white px-3 py-0.5 rounded-full font-bold" style={{ background: 'linear-gradient(135deg, #10B981, #059669)' }}>
-                    人気
-                  </div>
-                )}
-                <div className="font-bold mb-1 text-white">{plan.name}</div>
-                <div className="text-2xl font-bold text-emerald-400 mb-1">{plan.price}</div>
-                <div className="text-xs text-gray-400 mb-4">{plan.limit}</div>
-                <Link
-                  href={plan.url}
-                  aria-label={`${plan.name}プランで申し込む`}
-                  className={`block w-full text-center text-sm font-bold py-3 rounded-xl min-h-[44px] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] ${
-                    plan.highlight ? "text-white" : "text-gray-200"
-                  }`}
-                  style={plan.highlight ? { background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', boxShadow: '0 0 15px rgba(16, 185, 129, 0.3)' } : { background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)' }}
-                >
-                  {plan.name === "お試し" ? "無料で試す" : "申し込む"}
-                </Link>
-              </div>
-            ))}
+          <h2 className="text-2xl font-bold mb-6 text-white">料金プラン</h2>
+
+          {/* 年額/月額トグルスイッチ（デフォルト: 年額。「2ヶ月無料」のゼロ価格効果でCVR最大化） */}
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <span className={`text-sm font-medium transition-colors ${!isAnnual ? 'text-white' : 'text-white/40'}`}>月額</span>
+            <button
+              role="switch"
+              aria-checked={isAnnual}
+              aria-label="年額プランと月額プランを切り替える"
+              onClick={() => setIsAnnual(!isAnnual)}
+              className={`relative w-14 h-7 rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${isAnnual ? 'bg-emerald-500' : 'bg-white/20'}`}
+            >
+              <span
+                className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 ${isAnnual ? 'translate-x-7' : 'translate-x-0'}`}
+              />
+            </button>
+            <span className={`text-sm font-medium transition-colors ${isAnnual ? 'text-white' : 'text-white/40'}`}>
+              年額
+              <span className="ml-2 text-xs bg-green-500 text-white px-2 py-0.5 rounded-full font-bold">2ヶ月無料</span>
+            </span>
           </div>
+
+          {isAnnual ? (
+            /* 年額プラン表示 */
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+              {[
+                { name: "お試し", price: "無料", monthly: null, limit: "3回まで", planId: null as null, highlight: false },
+                { name: "スタンダード年額", price: "¥9,800/年", monthly: "月換算 ¥817/月", limit: "月30回・2ヶ月分無料", planId: "annual" as const, highlight: true },
+                { name: "1回払い", price: "¥1,980/回", monthly: null, limit: "今回のみ利用", planId: "once" as const, highlight: false },
+              ].map((plan) => (
+                <div
+                  key={plan.name}
+                  className="rounded-2xl p-6 relative transition-all duration-300 hover:-translate-y-1"
+                  style={{
+                    background: plan.highlight ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255,255,255,0.05)',
+                    backdropFilter: 'blur(12px)',
+                    border: plan.highlight ? '2px solid rgba(52, 211, 153, 0.4)' : '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: plan.highlight ? '0 0 30px rgba(16, 185, 129, 0.15), 0 8px 32px rgba(0,0,0,0.2)' : '0 8px 32px rgba(0,0,0,0.15)',
+                  }}
+                >
+                  {plan.highlight && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1">
+                      <span className="text-xs text-white px-3 py-0.5 rounded-full font-bold" style={{ background: 'linear-gradient(135deg, #10B981, #059669)' }}>おすすめ</span>
+                      <span className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full font-bold">2ヶ月無料</span>
+                    </div>
+                  )}
+                  <div className="font-bold mb-1 text-white">{plan.name}</div>
+                  <div className="text-2xl font-bold text-emerald-400 mb-1">{plan.price}</div>
+                  {plan.monthly && <div className="text-xs text-green-400 font-medium mb-1">{plan.monthly}</div>}
+                  <div className="text-xs text-gray-400 mb-4">{plan.limit}</div>
+                  {plan.planId === null ? (
+                    <Link
+                      href="/tool"
+                      aria-label="お試しプランで無料体験する"
+                      className="block w-full text-center text-sm font-bold py-3 rounded-xl min-h-[44px] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] text-gray-200"
+                      style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    >
+                      無料で試す
+                    </Link>
+                  ) : (
+                    <KomojuButton
+                      planId={plan.planId}
+                      planLabel={plan.name}
+                      className={`block w-full text-center text-sm font-bold py-3 rounded-xl min-h-[44px] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] ${plan.highlight ? 'text-white' : 'text-gray-200'}`}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* 月額プラン表示 */
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+              {[
+                { name: "お試し", price: "無料", limit: "3回まで", planId: null as null, highlight: false },
+                { name: "スタンダード", price: "¥980/月", limit: "月30回", planId: "monthly" as const, highlight: true },
+                { name: "1回払い", price: "¥1,980/回", limit: "今回のみ利用", planId: "once" as const, highlight: false },
+              ].map((plan) => (
+                <div
+                  key={plan.name}
+                  className="rounded-2xl p-6 relative transition-all duration-300 hover:-translate-y-1"
+                  style={{
+                    background: plan.highlight ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255,255,255,0.05)',
+                    backdropFilter: 'blur(12px)',
+                    border: plan.highlight ? '2px solid rgba(52, 211, 153, 0.4)' : '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: plan.highlight ? '0 0 30px rgba(16, 185, 129, 0.15), 0 8px 32px rgba(0,0,0,0.2)' : '0 8px 32px rgba(0,0,0,0.15)',
+                  }}
+                >
+                  {plan.highlight && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs text-white px-3 py-0.5 rounded-full font-bold" style={{ background: 'linear-gradient(135deg, #10B981, #059669)' }}>
+                      人気
+                    </div>
+                  )}
+                  <div className="font-bold mb-1 text-white">{plan.name}</div>
+                  <div className="text-2xl font-bold text-emerald-400 mb-1">{plan.price}</div>
+                  <div className="text-xs text-gray-400 mb-4">{plan.limit}</div>
+                  {plan.planId === null ? (
+                    <Link
+                      href="/tool"
+                      aria-label="お試しプランで無料体験する"
+                      className="block w-full text-center text-sm font-bold py-3 rounded-xl min-h-[44px] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] text-gray-200"
+                      style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    >
+                      無料で試す
+                    </Link>
+                  ) : (
+                    <KomojuButton
+                      planId={plan.planId}
+                      planLabel={plan.name}
+                      className={`block w-full text-center text-sm font-bold py-3 rounded-xl min-h-[44px] transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] ${plan.highlight ? 'text-white' : 'text-gray-200'}`}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

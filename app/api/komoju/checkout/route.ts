@@ -1,5 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic'
+
+// プランID → 金額・説明の対応表
+// KOMOJU審査通過後に各プランのsubscription_idを設定すること
+const PLANS: Record<string, { amount: number; description: string }> = {
+  monthly: { amount: 980, description: 'AI終活サポート 月額プラン' },
+  once: { amount: 1980, description: 'AI終活サポート 1回払い' },
+  // 年額プラン（月額×10 = 2ヶ月分無料、月換算¥817/月）
+  // プレースホルダー: KOMOJU審査通過後にplanIDを登録してください
+  annual: { amount: 9800, description: 'AI終活サポート 年額プラン（月換算¥817/月・2ヶ月分無料）' },
+};
+
 export async function POST(req: NextRequest) {
   try {
     const { plan } = await req.json();
@@ -8,7 +20,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "決済設定が未完了です" }, { status: 500 });
     }
 
-    const amount = plan === "once" ? 1980 : 980;
+    // planが未指定の場合は月額をデフォルトとする
+    const selected = PLANS[plan ?? "monthly"];
+    if (!selected) {
+      return NextResponse.json({ error: "無効なプランIDです" }, { status: 400 });
+    }
+
     const origin = req.headers.get("origin") || "https://shukatsu-ai.vercel.app";
 
     const body = new URLSearchParams({
@@ -19,9 +36,9 @@ export async function POST(req: NextRequest) {
     });
 
     body.append("line_items[][quantity]", "1");
-    body.append("line_items[][unit_price]", String(amount));
+    body.append("line_items[][unit_price]", String(selected.amount));
     body.append("line_items[][currency]", "JPY");
-    body.append("line_items[][description]", plan === "once" ? "AI終活サポート 1回払い" : "AI終活サポート 月額プラン");
+    body.append("line_items[][description]", selected.description);
 
     const res = await fetch("https://komoju.com/api/v1/sessions", {
       method: "POST",
