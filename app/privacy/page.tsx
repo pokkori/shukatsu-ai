@@ -71,6 +71,16 @@ export default function PrivacyPage() {
             </div>
 
             <div className="border-b border-white/5 pb-6">
+              <h2 className="font-bold text-slate-100 mb-2">6-2. 外部送信について</h2>
+              <p>本サービスでは以下の第三者サービスを利用しており、お客様の情報が外部に送信される場合があります。</p>
+              <ul className="list-disc ml-4 mt-2 space-y-1">
+                <li><strong>Google Analytics（Google LLC）</strong>: アクセス解析のため、Cookie・IPアドレス・行動データを送信します。<a href="https://policies.google.com/privacy" target="_blank" rel="noopener" className="underline text-indigo-400">Googleのプライバシーポリシー</a></li>
+                <li><strong>Vercel Analytics（Vercel Inc.）</strong>: パフォーマンス計測のため、アクセスデータを送信します。</li>
+              </ul>
+              <p className="mt-2">上記ツールの利用停止（オプトアウト）をご希望の場合は、<a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener" className="underline text-indigo-400">Google アナリティクス オプトアウトアドオン</a>をご利用ください。</p>
+            </div>
+
+            <div className="border-b border-white/5 pb-6">
               <h2 className="font-bold text-slate-100 mb-2">7. 免責事項</h2>
               <p>本サービスが提供するコンテンツはAIによる情報提供であり、法律・税務・医療の専門的アドバイスではありません。相続・医療・介護に関する具体的な判断は、必ず専門家（弁護士・税理士・医師等）にご相談ください。</p>
             </div>
