@@ -5,6 +5,7 @@ import { useTypewriter } from "@/lib/useTypewriter";
 import KomojuButton from "@/components/KomojuButton";
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 import ConfettiLaunch from "@/components/ConfettiLaunch";
+import { AffiliateSection } from "@/components/AffiliateSection";
 
 /* ---- 生成完了グロー点滅コンポーネント ---- */
 function ResultArea({ children, isNew }: { children: React.ReactNode; isNew: boolean }) {
@@ -392,9 +393,13 @@ export default function ShukatsuTool() {
               )}
             </div>
           ) : parsed ? (
-            <ResultArea isNew={isNewResult}>
-              <ResultTabs parsed={parsed} />
-            </ResultArea>
+            <>
+              <ResultArea isNew={isNewResult}>
+                <ResultTabs parsed={parsed} />
+              </ResultArea>
+              {/* アフィリエイトCTA — 結果表示後に専門家相談を促す */}
+              <AffiliateSection />
+            </>
           ) : (
             <div className="flex-1 backdrop-blur-sm bg-white/5 border border-white/10 rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
               <p className="text-sm text-center font-medium text-gray-400">情報を入力して<br />「アドバイスをもらう」を押してください</p>
