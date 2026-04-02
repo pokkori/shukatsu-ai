@@ -288,7 +288,7 @@ export default function ShukatsuTool() {
           break;
         }
       }
-    } catch { setError("通信エラーが発生しました。インターネット接続を確認してください。"); }
+    } catch { setError("少し時間をおいてもう一度お試しください。"); }
     finally { setLoading(false); }
   };
 
