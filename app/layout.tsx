@@ -237,6 +237,32 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {children}
         </div>
         <InstallPrompt />
+        {/* 関連AIサービス */}
+        <section className="mt-8 pt-6 border-t border-white/10 px-4 max-w-2xl mx-auto">
+          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            関連サービス
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <a
+              href="https://konkatsu-ai.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block p-3 bg-white/5 rounded-lg hover:bg-white/10 transition text-sm"
+            >
+              <span className="block font-medium text-gray-200">婚活AI</span>
+              <span className="block text-xs text-gray-400 mt-0.5">婚活プロフィールをAIが作成</span>
+            </a>
+            <a
+              href="https://lifecompass-ai.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block p-3 bg-white/5 rounded-lg hover:bg-white/10 transition text-sm"
+            >
+              <span className="block font-medium text-gray-200">LifeCompassAI</span>
+              <span className="block text-xs text-gray-400 mt-0.5">人生設計をAIがサポート</span>
+            </a>
+          </div>
+        </section>
         <FeedbackButton />
         <Analytics />
         <SpeedInsights />
