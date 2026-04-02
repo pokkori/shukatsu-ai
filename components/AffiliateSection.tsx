@@ -1,50 +1,60 @@
 'use client';
 
 // ===================================================================
-// AffiliateSectionコンポーネント — A8.netアフィリエイトCTA
-// A8.netプログラムIDは取得後に下記の href を差し替えてください。
-// 差し替え箇所: href="https://px.a8.net/svt/ejp?a8mat=【プログラムID】"
+// AffiliateSectionコンポーネント — A8.netアフィリエイトCTA（転職特化）
+// 環境変数: NEXT_PUBLIC_A8_MEIKO_URL（明光キャリアパートナーズ）
+//           NEXT_PUBLIC_A8_DODA_URL（doda）
+// A8.netプログラムID取得後に .env.local / Vercel環境変数に設定してください。
 // ===================================================================
 
 interface AffiliateItem {
   title: string;
   description: string;
   cta: string;
-  /** A8.netアフィリリンク（プログラムID取得後に差し替え） */
+  /** A8.netアフィリリンク（環境変数 or プレースホルダー） */
   href: string;
   badge: string;
+  accentColor: string;
+  badgeBg: string;
+  borderColor: string;
 }
 
 const ITEMS: AffiliateItem[] = [
   {
-    title: '弁護士・司法書士に無料相談する',
-    description: '相続・遺言・成年後見など、終活の法律問題を専門家が丁寧にサポート。初回相談無料。',
-    cta: '無料で法律相談する',
-    // A8.net: ベンナビ相続（弁護士・司法書士）— プログラムID取得後に差し替え
-    href: 'https://px.a8.net/svt/ejp?a8mat=【A8netプログラムID_法律相談_取得後に差し替え】',
-    badge: '単価¥10,000〜30,000',
+    title: 'プロのキャリアアドバイザーに無料相談',
+    description: '転職でキャリアアップしたい方へ。明光キャリアパートナーズのアドバイザーが求人提案から面接対策まで完全無料でサポート。',
+    cta: '無料キャリア相談する',
+    // A8.net: 明光キャリアパートナーズ（単価¥78,000）— 取得後に差し替え
+    href: process.env.NEXT_PUBLIC_A8_MEIKO_URL ?? 'https://px.a8.net/svt/ejp?a8mat=【A8netプログラムID_明光キャリアパートナーズ_取得後に差し替え】',
+    badge: '単価¥78,000',
+    accentColor: '#6366F1',
+    badgeBg: 'bg-indigo-50',
+    borderColor: 'border-indigo-100',
   },
   {
-    title: 'FP（ファイナンシャルプランナー）に無料相談',
-    description: '相続税・資産承継・遺族年金など、お金の不安をファイナンシャルプランナーが無料でアドバイス。',
-    cta: '無料でFP相談する',
-    // A8.net: FPカフェ 無料FP相談 — プログラムID取得後に差し替え
-    href: 'https://px.a8.net/svt/ejp?a8mat=【A8netプログラムID_FP相談_取得後に差し替え】',
-    badge: '単価¥10,000〜22,880',
+    title: 'doda — 転職求人数No.1クラス',
+    description: '就活・転職に強いdodaで非公開求人も含めた求人検索。キャリアカウンセリング無料。業界最大級の求人数から理想の職場を探せます。',
+    cta: '無料で求人を探す',
+    // A8.net: doda（単価¥10,000〜20,000）— 取得後に差し替え
+    href: process.env.NEXT_PUBLIC_A8_DODA_URL ?? 'https://px.a8.net/svt/ejp?a8mat=【A8netプログラムID_doda_取得後に差し替え】',
+    badge: '単価¥10,000〜',
+    accentColor: '#8B5CF6',
+    badgeBg: 'bg-violet-50',
+    borderColor: 'border-violet-100',
   },
 ];
 
 export function AffiliateSection() {
   return (
     <section
-      className="mt-8 rounded-2xl border border-blue-100 overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, rgba(239,246,255,0.95) 0%, rgba(238,242,255,0.95) 100%)' }}
-      aria-labelledby="affiliate-heading"
+      className="mt-8 rounded-2xl border border-indigo-100 overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, rgba(238,242,255,0.97) 0%, rgba(237,233,254,0.97) 100%)' }}
+      aria-labelledby="affiliate-heading-shukatsu"
     >
       {/* ヘッダー */}
       <div className="flex items-center justify-between px-5 pt-4 pb-2">
-        <h2 id="affiliate-heading" className="text-sm font-bold text-gray-700">
-          さらに専門家に相談する
+        <h2 id="affiliate-heading-shukatsu" className="text-sm font-bold text-gray-700">
+          転職でキャリアアップしたい方へ
         </h2>
         {/* 景表法対応: PR表記 */}
         <span className="text-xs font-bold text-gray-400 border border-gray-300 rounded px-1.5 py-0.5">PR</span>
@@ -53,7 +63,7 @@ export function AffiliateSection() {
       {/* カードリスト */}
       <ul className="px-4 pb-4 space-y-3" role="list">
         {ITEMS.map((item) => (
-          <li key={item.title} className="bg-white rounded-xl border border-blue-100 shadow-sm">
+          <li key={item.title} className={`bg-white rounded-xl border ${item.borderColor} shadow-sm`}>
             <a
               href={item.href}
               target="_blank"
@@ -63,18 +73,19 @@ export function AffiliateSection() {
               style={{ minHeight: '44px' }}
             >
               <div className="flex-1 min-w-0">
-                {/* SVGアイコン: 専門家相談 */}
+                {/* SVGアイコン: 転職・キャリア */}
                 <div className="flex items-center gap-2 mb-1">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <circle cx="12" cy="8" r="4" stroke="#3B82F6" strokeWidth="2"/>
-                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round"/>
+                    <rect x="2" y="7" width="20" height="14" rx="2" stroke={item.accentColor} strokeWidth="2"/>
+                    <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" stroke={item.accentColor} strokeWidth="2"/>
+                    <path d="M12 12v4M10 14h4" stroke={item.accentColor} strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                   <p className="text-sm font-bold text-gray-800 truncate">{item.title}</p>
                 </div>
                 <p className="text-xs text-gray-500 leading-snug">{item.description}</p>
               </div>
               <div className="flex flex-col items-end gap-1 shrink-0">
-                <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full whitespace-nowrap">
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${item.badgeBg}`} style={{ color: item.accentColor }}>
                   {item.cta}
                 </span>
                 {/* 矢印アイコン */}
@@ -89,7 +100,7 @@ export function AffiliateSection() {
 
       {/* 景表法対応: 広告表記フッター */}
       <p className="text-xs text-gray-400 text-center pb-3">
-        ※ 外部サービスへのリンクです（広告）。各社公式サイトに遷移します。
+        ※ 外部サービスへのリンクです（アフィリエイト広告）。各社公式サイトに遷移します。
       </p>
     </section>
   );
