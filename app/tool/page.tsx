@@ -6,6 +6,7 @@ import KomojuButton from "@/components/KomojuButton";
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 import ConfettiLaunch from "@/components/ConfettiLaunch";
 import { AffiliateSection } from "@/components/AffiliateSection";
+import { UsageCounter } from "@/components/UsageCounter";
 
 /* ---- 生成完了グロー点滅コンポーネント ---- */
 function ResultArea({ children, isNew }: { children: React.ReactNode; isNew: boolean }) {
@@ -315,6 +316,7 @@ export default function ShukatsuTool() {
         <div className="backdrop-blur-sm bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
           <DiagnosisHistoryPanel />
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="mb-2 max-w-xs"><UsageCounter /></div>
           <h1 className="text-xl font-bold bg-gradient-to-r from-green-300 via-emerald-200 to-teal-300 bg-clip-text text-transparent">あなたの状況を教えてください</h1>
           {streak && streak.count > 0 && <div className="mt-2 inline-flex items-center gap-2 bg-orange-500/20 border border-orange-400/30 rounded-full px-3 py-1 text-sm text-orange-300"><span>{streak.count}日連続利用中</span></div>}
           {streakMsg && <div className="text-orange-600 font-bold text-sm">{streakMsg}</div>}
