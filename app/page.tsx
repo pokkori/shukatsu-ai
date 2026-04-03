@@ -371,6 +371,7 @@ export default function ShukatsuLP() {
               { '@type': 'Question', name: '個人情報は安全ですか？', acceptedAnswer: { '@type': 'Answer', text: '入力された情報はAI分析のみに使用し、第三者への提供は行いません。SSL暗号化通信で安全に保護されています。' } },
               { '@type': 'Question', name: 'AIの回答は法的に有効ですか？', acceptedAnswer: { '@type': 'Answer', text: '本サービスは情報提供を目的としており、法律・税務・医療の専門的アドバイスではありません。具体的な手続きは必ず専門家にご相談ください。' } },
               { '@type': 'Question', name: 'エンディングノートの作成にどのくらい時間がかかりますか？', acceptedAnswer: { '@type': 'Answer', text: 'AIの質問に答えていくだけで、30分程度で基本的な内容が完成します。ご自身のペースで進めていただけます。' } },
+              { '@type': 'Question', name: 'デジタル遺品の整理は何から始めればいいですか？', acceptedAnswer: { '@type': 'Answer', text: 'SNSアカウント・ネット銀行・サブスクリプションサービスのリスト化から始めましょう。AI終活サポートがサービスごとの対処方法（解約・引き継ぎ・削除申請）を案内します。' } },
             ],
           }).replace(/</g, '\\u003c'),
         }}
@@ -384,6 +385,8 @@ export default function ShukatsuLP() {
             name: 'AI終活サポート',
             applicationCategory: 'LifestyleApplication',
             operatingSystem: 'Web',
+            description: 'エンディングノート作成・相続手続き案内・デジタル遺品整理を24時間AIがサポート。50代・60代・70代向けの終活相談Webサービス。無料3回から利用可能。',
+            url: 'https://shukatsu-ai.vercel.app',
             offers: { '@type': 'Offer', price: '0', priceCurrency: 'JPY' },
           }).replace(/</g, '\\u003c'),
         }}
