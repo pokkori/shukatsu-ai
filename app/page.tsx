@@ -9,6 +9,8 @@ import { UsageCounter } from "@/components/UsageCounter";
 import { CrossSell } from "@/components/CrossSell";
 import { TrustBadge } from "@/components/TrustBadge";
 import KomojuButton from "@/components/KomojuButton";
+import { FaqJsonLd } from "@/components/FaqJsonLd";
+import { XShareButton } from "@/components/XShareButton";
 
 const worries = [
   { id: "note", label: "終活ノートを作りたい", desc: "エンディングノートの書き方がわからない" },
@@ -360,22 +362,13 @@ export default function ShukatsuLP() {
           ))}
         </div>
       </section>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: [
-              { '@type': 'Question', name: '無料で使えますか？', acceptedAnswer: { '@type': 'Answer', text: '基本機能は無料で3回までご利用いただけます。クレジットカードの登録も不要です。' } },
-              { '@type': 'Question', name: '個人情報は安全ですか？', acceptedAnswer: { '@type': 'Answer', text: '入力された情報はAI分析のみに使用し、第三者への提供は行いません。SSL暗号化通信で安全に保護されています。' } },
-              { '@type': 'Question', name: 'AIの回答は法的に有効ですか？', acceptedAnswer: { '@type': 'Answer', text: '本サービスは情報提供を目的としており、法律・税務・医療の専門的アドバイスではありません。具体的な手続きは必ず専門家にご相談ください。' } },
-              { '@type': 'Question', name: 'エンディングノートの作成にどのくらい時間がかかりますか？', acceptedAnswer: { '@type': 'Answer', text: 'AIの質問に答えていくだけで、30分程度で基本的な内容が完成します。ご自身のペースで進めていただけます。' } },
-              { '@type': 'Question', name: 'デジタル遺品の整理は何から始めればいいですか？', acceptedAnswer: { '@type': 'Answer', text: 'SNSアカウント・ネット銀行・サブスクリプションサービスのリスト化から始めましょう。AI終活サポートがサービスごとの対処方法（解約・引き継ぎ・削除申請）を案内します。' } },
-            ],
-          }).replace(/</g, '\\u003c'),
-        }}
-      />
+      <FaqJsonLd items={[
+        { question: '無料で使えますか？', answer: '基本機能は無料で3回までご利用いただけます。クレジットカードの登録も不要です。' },
+        { question: '個人情報は安全ですか？', answer: '入力された情報はAI分析のみに使用し、第三者への提供は行いません。SSL暗号化通信で安全に保護されています。' },
+        { question: 'AIの回答は法的に有効ですか？', answer: '本サービスは情報提供を目的としており、法律・税務・医療の専門的アドバイスではありません。具体的な手続きは必ず専門家にご相談ください。' },
+        { question: 'エンディングノートの作成にどのくらい時間がかかりますか？', answer: 'AIの質問に答えていくだけで、30分程度で基本的な内容が完成します。ご自身のペースで進めていただけます。' },
+        { question: 'デジタル遺品の整理は何から始めればいいですか？', answer: 'SNSアカウント・ネット銀行・サブスクリプションサービスのリスト化から始めましょう。AI終活サポートがサービスごとの対処方法（解約・引き継ぎ・削除申請）を案内します。' },
+      ]} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -395,6 +388,9 @@ export default function ShukatsuLP() {
       {/* シェアセクション */}
       <section className="py-8 px-4 text-center">
         <ShareButtons url="https://shukatsu-ai.vercel.app" text="AI終活サポートを使ってみた！" hashtags="終活AI" />
+        <div className="mt-3 flex justify-center">
+          <XShareButton text="AI終活サポートを使ってみた！エンディングノート・相続・デジタル遺品整理をAIがサポート。" url="https://shukatsu-ai.vercel.app" hashtags={['終活AI', '終活']} />
+        </div>
       </section>
 
       <CrossSell currentService="就活AI" />
