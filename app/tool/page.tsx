@@ -133,10 +133,10 @@ function Paywall({ onClose }: { onClose: () => void }) {
         <h2 className="text-lg font-bold mb-2 text-white">無料相談回数を使い切りました</h2>
         <p className="text-sm text-gray-300 mb-1">詳細な終活アドバイスを受け取る</p>
         <ul className="text-xs text-gray-300 text-left mb-5 space-y-1 mt-3">
-          <li>✓ 相続・財産対策の詳細アドバイス</li>
-          <li>✓ 医療・介護の事前準備ガイド</li>
-          <li>✓ 専門家費用の相場情報（一覧表付き）</li>
-          <li>✓ 印刷してご家族と共有</li>
+          <li>相続・財産対策の詳細アドバイス</li>
+          <li>医療・介護の事前準備ガイド</li>
+          <li>専門家費用の相場情報（一覧表付き）</li>
+          <li>印刷してご家族と共有</li>
         </ul>
         <div className="space-y-3 mb-4">
           <KomojuButton planId="once" planLabel="¥1,980 で詳細レポートを受け取る（1回限り）"
@@ -157,7 +157,7 @@ function CopyButton({ text, label = "コピー" }: { text: string; label?: strin
       onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
       aria-label={copied ? "コピーしました" : `${label}をクリップボードにコピーする`}
       className="text-xs px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-gray-300 font-medium transition-colors">
-      {copied ? "コピー済み ✓" : label}
+      {copied ? "コピー済み" : label}
     </button>
   );
 }
