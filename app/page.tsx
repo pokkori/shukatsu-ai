@@ -705,6 +705,21 @@ export default function ShukatsuLP() {
 				dangerouslySetInnerHTML={{
 					__html: JSON.stringify({
 						"@context": "https://schema.org",
+						"@type": "FAQPage",
+						mainEntity: [
+							{ "@type": "Question", name: "無料で使えますか？", acceptedAnswer: { "@type": "Answer", text: "基本機能は無料で3回までご利用いただけます。クレジットカードの登録も不要です。" } },
+							{ "@type": "Question", name: "個人情報は安全ですか？", acceptedAnswer: { "@type": "Answer", text: "入力された情報はAI分析のみに使用し、第三者への提供は行いません。SSL暗号化通信で安全に保護されています。" } },
+							{ "@type": "Question", name: "AIの回答は法的に有効ですか？", acceptedAnswer: { "@type": "Answer", text: "本サービスは情報提供を目的としており、法律・税務・医療の専門的アドバイスではありません。具体的な手続きは必ず専門家にご相談ください。" } },
+							{ "@type": "Question", name: "エンディングノートの作成にどのくらい時間がかかりますか？", acceptedAnswer: { "@type": "Answer", text: "AIの質問に答えていくだけで、30分程度で基本的な内容が完成します。ご自身のペースで進めていただけます。" } },
+						],
+					}).replace(/</g, "\\u003c"),
+				}}
+			/>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify({
+						"@context": "https://schema.org",
 						"@type": "SoftwareApplication",
 						name: "AI終活サポート",
 						applicationCategory: "LifestyleApplication",
