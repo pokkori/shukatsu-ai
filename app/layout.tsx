@@ -2,7 +2,7 @@ import OrbBackground from "@/components/OrbBackground";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Inter, Noto_Sans_JP } from "next/font/google";
+import { Inter, Noto_Sans_JP, M_Plus_1p } from "next/font/google";
 import Script from "next/script";
 import CookieBanner from "@/components/CookieBanner";
 import FeedbackButton from "@/components/FeedbackButton";
@@ -17,6 +17,13 @@ const notoSansJP = Noto_Sans_JP({
 	weight: ["400", "700"],
 	display: "swap",
 	variable: "--font-noto-sans-jp",
+});
+
+const mPlus1p = M_Plus_1p({
+	subsets: ["latin"],
+	weight: ["400", "700", "800"],
+	display: "swap",
+	variable: "--font-m-plus-1p",
 });
 
 const SITE_URL = "https://shukatsu-ai.vercel.app";
@@ -232,7 +239,7 @@ export default function RootLayout({
 	children,
 }: Readonly<{ children: React.ReactNode }>) {
 	return (
-		<html lang="ja" className={`${inter.variable} ${notoSansJP.variable}`}>
+		<html lang="ja" className={`${inter.variable} ${notoSansJP.variable} ${mPlus1p.variable}`}>
 			<head>
 				<script
 					type="application/ld+json"
